@@ -5,11 +5,10 @@ int main()
   //Salman's Part.
   //Variables for Data Entry
   const int maxstudents=30;
-  char student_name[maxstudents];
-  char Section[maxstudents];
+  char student_name[30];
+  char Section[30];
   char Department[10];
   int Semester[10];
-  //____________________________________________
   //Variable for choice and current count of students
   int choice=-1;
   //Infinite Loop for Menu
@@ -36,25 +35,29 @@ int main()
     cin>>choice;
     cout << "--------------------------------------------\n";
   if(choice==1){
-    int current_studentcount=0;
-    cout<<"Enter Number of Students: ";
-    cin>>current_studentcount;
-    if (current_studentcount<10||current_studentcount>maxstudents)
+    int Total_Students=0;
+    again_entry:cout<<"Enter Number of Students: ";
+    cin>>Total_Students;
+    if (Total_Students<10||Total_Students>maxstudents)
     {
       cout<<"Invalid Number of Students. Please try again."<<endl;
-      continue;
+      goto again_entry;
     }
     else{
-    for(int i=0;i<current_studentcount;i++)
+    for(int i=0;i<Total_Students;i++)
     {
       cout<<"Enter Student Name: ";
-      cin>>student_name[i];
+      cin>>student_name;
       cout<<"Enter Section: ";
-      cin>>Section[i];
+      cin>>Section;
       cout<<"Enter Department: ";
-      cin>>Department[i];
+      cin>>Department;
+      for(int j=0;j<1;j++)
+      {
       cout<<"Enter Semester: ";
       cin>>Semester[i];
+      }
+      cout<<"Student Record for "<<student_name<<" has been added successfully."<<endl;
     }}
   }
   else if (choice==2){}
