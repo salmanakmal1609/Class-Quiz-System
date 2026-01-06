@@ -5,10 +5,10 @@ int main()
   //Salman's Part.
   //Variables for All Students, 3 fix and 1 is for entry of Data 
   const int maxstudents=4;
-  char student1_id[30]="L1F25BSCS0645";
-  char student2_id[30]="L1F25BSCS0935";
-  char student3_id[30]="L1F25BSCS0635";
-  char student4_id[30];
+  int student1_id[20]={0,6,4,5};
+  int student2_id[20]={0,9,3,5};
+  int student3_id[20]={0,6,3,5};
+  int student4_id[20];
 
   char student1_name[30]="Husnain Mansoor";
   char student2_name[30]="Ahmad Arslan";
@@ -67,7 +67,7 @@ int main()
     cin>>student_no;
 
     //If user Enter Wrong Student number eg: 0 or 5 or 10 so it will go to again entry.
-    if (student_no<1||student_no>4)
+    if (student_no<1||student_no>maxstudents)
     {
       
       cout<<"Invalid Number of Student. Please try again."<<endl;
