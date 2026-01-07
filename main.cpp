@@ -4,40 +4,39 @@ int main()
 {
   //Salman's Part.
   //Variables for All Students, 3 fix and 1 is for entry of Data 
-  const int maxstudents=4;
-  int student1_id[20]={0,6,4,5};
-  int student2_id[20]={0,9,3,5};
-  int student3_id[20]={0,6,3,5};
-  int student4_id[20];
+  int student1_id = 1645;
+  int student2_id = 1935;
+  int student3_id = 1635;
+  int student4_id = 0; // To be entered by user.
 
-  char student1_name[30]="Husnain Mansoor";
-  char student2_name[30]="Ahmad Arslan";
-  char student3_name[30]="Abdul Moiz";
-  char student4_name[30];
+  char student1_name[20]="Husnain Mansoor";
+  char student2_name[20]="Ahmad Arslan";
+  char student3_name[20]="Abdul Moiz";
+  char student4_name[20];
 
-  char student1_section[20]= "A16";
-  char student2_section[20]= "A16";
-  char student3_section[20]= "A16";
-  char student4_section[20]= "A16";
+  char student1_section[10]= "A16";
+  char student2_section[10]= "A16";
+  char student3_section[10]= "A16";
+  char student4_section[10]= "A16";
 
-  char student1_department[20]="FOIT";
-  char student2_department[20]="FOIT";
-  char student3_department[20]="FOIT";
-  char student4_department[20];
+  char student1_department[10]="FOIT";
+  char student2_department[10]="FOIT";
+  char student3_department[10]="FOIT";
+  char student4_department[10];
 
-  int student1_semester[10]={1};
-  int student2_semester[10]={1};
-  int student3_semester[10]={1};
-  int student4_semester[10];
+  int student1_semester=1;
+  int student2_semester=1;
+  int student3_semester=1;
+  int student4_semester=0;
   //Variable for choice
-  int choice=-1;
+  int choice;
   //variable for Infinite Loop for Menu
-  bool infinite_loop=true;
+  bool infinite_main_menu=true;
   do{
-  choice=-1;
-  //Menu Display
-    menu:
-    cout << "============================================================\n";
+    main_menu:
+    choice=-1;
+    //Main Menu Display
+    cout << "\n\n\n============================================================\n";
     cout << " Quiz Marks & Result Summary System\n";
     cout << "============================================================\n";
     cout << "1) Enter / Replace Student Records\n";
@@ -60,97 +59,64 @@ int main()
   if(choice==1)
   {
     int student_no=0;
-    cout<<"\n (Remember there are only four students allowed";
-    cout<<"in this system according to requirement.";
-    cout<<"\n In which 3 already have values but you also can edit them)";
-    again_entry:cout<<"\n\nEnter no. of Student you want to Enter (1 - 4): ";
+    cout << "\n\n================ STUDENT RECORD ACCESS ================\n";
+    cout << " STATUS: [3] Records Locked | [1] Slot Available\n";
+    modul1_student_no:
+    cout << " NOTICE: Press 4 if you want to edit 4th slot\t:\t";
     cin>>student_no;
 
     //If user Enter Wrong Student number eg: 0 or 5 or 10 so it will go to again entry.
-    if (student_no<1||student_no>maxstudents)
+    if (student_no!=4)
     {
-      
       cout<<"Invalid Number of Student. Please try again."<<endl;
-      again_display_of_module1_1:
+      module1_menu1:
       cout<<"1) Re-enter Student Number"<<endl;
       cout<<"2) Return to Main Menu"<<endl;
       cin>>choice;
-      if(choice==1) goto again_entry;
+      //if choice == 1 it again ask for press 4 
+      if(choice==1) goto modul1_student_no;
 
-      else if (choice==2) goto menu;
-
+      //if choice == 2 it goes to main menu
+      else if (choice==2) goto main_menu;
       //If user enter invalid value it again show current menu
+
       else
       {
         cout<<"Invalid Choice."<<endl;
-        goto again_display_of_module1_1;
+        goto module1_menu1;
       }
     }
-    else{
-      cout<<"Data Entry for Student "<<student_no<<":"<<endl;
-      if(student_no==1){
-        
-        bool duplicate;
-do {
-    duplicate = false;
+    else
+    {
+      // Module 1 Data entry Menu.
+      module1_menu2:
+      cout<<"Data Entry for Student 4\n";
+          int temp_id;
+          bool same;
+          do
+          {
+            same=false;
+            cout<<"ID (int)\t:\t";
+            cin>>temp_id;
+            
+            if(temp_id == student1_id || temp_id == student2_id || temp_id == student3_id) 
+            {
+            cout << "Error: ID already exists!\n";
+            same = true;
+            }
+          }while(same);
 
-    cout<<"ID\t:\t";
-    cin.ignore();
-    cin.getline(student1_id,30);
-
-    if(student1_id[0] == '\0'){
-        cout<<"ID cannot be empty. Re-enter.\n";
-        duplicate = true;
-        goto again_entry;
-    }
-
-    // compare with student2
-    bool same = true;
-    for(int i=0; student1_id[i] != '\0' || student2_id[i] != '\0'; i++){
-        if(student1_id[i] != student2_id[i]){
-            same = false; break;
-        }
-    }
-    if(same){
-        cout<<"Duplicate ID with Student 2!\n";
-        duplicate = true;
-    }
-
-    // compare with student3
-    same = true;
-    for(int i=0; student1_id[i] != '\0' || student3_id[i] != '\0'; i++){
-        if(student1_id[i] != student3_id[i]){
-            same = false; break;
-        }
-    }
-    if(same){
-        cout<<"Duplicate ID with Student 3!\n";
-        duplicate = true;
-    }
-
-    // compare with student4
-    same = true;
-    for(int i=0; student1_id[i] != '\0' || student4_id[i] != '\0'; i++){
-        if(student1_id[i] != student4_id[i]){
-            same = false; break;
-        }
-    }
-    if(same){
-        cout<<"Duplicate ID with Student 4!\n";
-        duplicate = true;
-    }
-
-} while(duplicate);
-
-        cout<<"Name\t:\t";
-        cin.getline(student1_name,30);
-        cout<<"Section\t:\t";
-        cin.getline(student1_section,20);
-        cout<<"Department\t:\t";
-        cin.getline(student1_department,20);
-        cout<<"Semester\t:\t";
-        cin>>student1_semester[0];
-    }
+          // Cleaning buffer for getline
+          cin.ignore();
+          cout << "Name\t\t:\t";
+          cin.getline(student1_name, 20);
+          cout << "Section\t\t:\t";
+          cin.getline(student1_section, 10);
+          cout << "Department\t:\t";
+          cin.getline(student1_department, 10);
+          cout << "Semester (int)\t:\t";
+          cin >> student1_semester;
+          cout<<"Record Saved Successfully!";
     }
   }
   //Module 2 _____________________________________________________________________________
@@ -163,10 +129,10 @@ do {
   else if (choice==8){}
   else if (choice==9){}
   else if (choice==0){
-    cout<<"\nProgram Exited Successfully!";
+    cout<<"\nProgram Exited Successfully!\n\n";
     break;}
   else
     cout<<"Invalid Choice. Please try again."<<endl<<endl;
-  }while(infinite_loop);
+  }while(infinite_main_menu);
   return 0; 
 }
