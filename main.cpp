@@ -61,6 +61,7 @@ int main()
     int student_no=0;
     cout << "\n\n================ STUDENT RECORD ACCESS ================\n";
     cout << " STATUS: [3] Records Locked | [1] Slot Available\n";
+
     module1_student_no:
     cout << " NOTICE: Press 4 if you want to edit 4th slot\t:\t";
     cin>>student_no;
@@ -105,17 +106,17 @@ int main()
             same = true;
             }
           }while(same);
-
+          student4_id = temp_id;
           // Cleaning buffer for getline
           cin.ignore();
           cout << "Name\t\t:\t";
-          cin.getline(student1_name, 20);
+          cin.getline(student4_name, 20);
           cout << "Section\t\t:\t";
-          cin.getline(student1_section, 10);
+          cin.getline(student4_section, 10);
           cout << "Department\t:\t";
-          cin.getline(student1_department, 10);
+          cin.getline(student4_department, 10);
           cout << "Semester (int)\t:\t";
-          cin >> student1_semester;
+          cin >> student4_semester;
           cout<<"Record Saved Successfully!";
     }
   }
@@ -128,6 +129,8 @@ int main()
   else if (choice==7){}
   else if (choice==8){}
   else if (choice==9){}
+  else if (choice==10){}
+  else if (choice==11){}
   else if (choice==0){
     cout<<"\nProgram Exited Successfully!\n\n";
     break;}
