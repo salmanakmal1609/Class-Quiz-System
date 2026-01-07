@@ -17,7 +17,7 @@ int main()
   char student1_section[10]= "A16";
   char student2_section[10]= "A16";
   char student3_section[10]= "A16";
-  char student4_section[10]= "A16";
+  char student4_section[10];
 
   char student1_department[10]="FOIT";
   char student2_department[10]="FOIT";
@@ -61,7 +61,7 @@ int main()
     int student_no=0;
     cout << "\n\n================ STUDENT RECORD ACCESS ================\n";
     cout << " STATUS: [3] Records Locked | [1] Slot Available\n";
-    modul1_student_no:
+    module1_student_no:
     cout << " NOTICE: Press 4 if you want to edit 4th slot\t:\t";
     cin>>student_no;
 
@@ -74,7 +74,7 @@ int main()
       cout<<"2) Return to Main Menu"<<endl;
       cin>>choice;
       //if choice == 1 it again ask for press 4 
-      if(choice==1) goto modul1_student_no;
+      if(choice==1) goto module1_student_no;
 
       //if choice == 2 it goes to main menu
       else if (choice==2) goto main_menu;
