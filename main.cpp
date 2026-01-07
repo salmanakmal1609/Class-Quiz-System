@@ -3,7 +3,8 @@ using namespace std;
 int main()
 {
   //Salman's Part.
-  //Variables for All Students, 3 fix and 1 is for entry of Data 
+  //Variables for All Students
+  //3 fixed and 1 is for entry of Data 
   int student1_id = 1645;
   int student2_id = 1935;
   int student3_id = 1635;
@@ -28,6 +29,19 @@ int main()
   int student2_semester=1;
   int student3_semester=1;
   int student4_semester=0;
+
+  //Variables for Quizzes
+  //Only 2 quizzes are fixed and 1 is for entry of Data
+  const int maximum_quizz = 3;
+
+  //Quiz data arrays
+  int quiz_id[maximum_quizz] = {1, 2};
+  int quiz_total[maximum_quizz] = {10, 10};
+
+  int quiz_day[maximum_quizz] = {5, 10};
+  int quiz_month[maximum_quizz] = {1, 1};
+  int quiz_year[maximum_quizz] = {2026, 2026};
+  int index_quiz3=2; // index for quiz 3
   //Variable for choice
   int choice;
   //variable for Infinite Loop for Menu
@@ -55,7 +69,7 @@ int main()
     cout << "Enter your choice: ";
     cin>>choice;
     cout << "--------------------------------------------\n";
-  //Module 1 _____________________________________________________________________________
+  //Module 1) Enter / Replace Student Records
   if(choice==1)
   {
     int student_no=0;
@@ -63,7 +77,7 @@ int main()
     cout << " STATUS: [3] Records Locked | [1] Slot Available\n";
 
     module1_student_no:
-    cout << " NOTICE: Press 4 if you want to edit 4th slot\t:\t";
+    cout << "Press 4 if you want to edit 4th slot\t:\t";
     cin>>student_no;
 
     //If user Enter Wrong Student number eg: 0 or 5 or 10 so it will go to again entry.
@@ -71,8 +85,8 @@ int main()
     {
       cout<<"Invalid Number of Student. Please try again."<<endl;
       module1_menu1:
-      cout<<"1) Re-enter Student Number"<<endl;
-      cout<<"2) Return to Main Menu"<<endl;
+      cout<<"1) Try Again\n";
+      cout<<"2) Return to Main Menu\n";
       cin>>choice;
       //if choice == 1 it again ask for press 4 
       if(choice==1) goto module1_student_no;
@@ -120,8 +134,88 @@ int main()
           cout<<"Record Saved Successfully!";
     }
   }
-  //Module 2 _____________________________________________________________________________
-  else if (choice==2){}
+  //Module 2) Enter / Replace Quiz Setup (Total Marks + Date)
+  else if (choice==2)
+  {
+    int quiz_no=0;
+    cout << "\n\n================ QUIZ SETUP MENU ================\n";
+    cout << "STATUS: Quiz 1 and Quiz 2 are already saved\n";
+
+    module2_quiz_select:
+    cout << "Press 3 to enter Quiz 3 data: ";
+    cin >> quiz_no;
+
+    //Invalid quiz no
+    if (quiz_no != 3)
+    {
+      cout << "Invalid Quiz Number!\n\n";
+
+      module2_menu1:
+      cout << "1) Try Again\n";
+      cout << "2) Go Back to Main Menu\n";
+      cin >> choice;
+
+      if (choice == 1)
+        goto module2_quiz_select;
+      else if (choice == 2)
+        goto main_menu;
+      else
+      {
+        cout << "Invalid Choice!\n\n";
+        goto module2_menu1;
+      }
+    }
+    // if user press 3 for quiz 3 entry
+    else
+    {
+      bool same;
+
+      cout << "\n Enter Data for Quiz 3 \n";
+
+      //Quiz ID Entry
+      module2_quiz_id_entry:
+      same = false;
+
+      cout << "Enter Quiz ID (int): ";
+      cin >> quiz_id[index_quiz3];
+
+      //Duplicate check using loop
+      for (int i = 0; i < maximum_quizz - 1; i++)
+      {
+        if (quiz_id[index_quiz3] == quiz_id[i])
+          same = true;
+      }
+
+      if (same)
+      {
+        cout << "Error: Quiz ID already exists!\n";
+        goto module2_quiz_id_entry;
+      }
+
+      //Total Marks Entry
+      module2_quiz_marks_input:
+      cout << "Enter Total Marks: ";
+      cin >> quiz_total[index_quiz3-1];
+
+      if (quiz_total[index_quiz3-1] <= 0)
+      {
+        cout << "Marks must be greater than 0!\n";
+        goto module2_quiz_marks_input;
+      }
+
+      //Date Entry
+      cout << "Enter Quiz Date\n";
+      cout << "Day: ";
+      cin >> quiz_day[index_quiz3-1];
+      cout << "Month: ";
+      cin >> quiz_month[index_quiz3-1];
+      cout << "Year: ";
+      cin >> quiz_year[index_quiz3-1];
+
+      cout << "\nQuiz 3 Data Saved Successfully!\n";
+    }
+  
+  }
   else if (choice==3){}
   else if (choice==4){}
   else if (choice==5){}
