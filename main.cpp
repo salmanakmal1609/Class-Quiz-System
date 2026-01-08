@@ -3,6 +3,7 @@ using namespace std;
 int main()
 {
   //Salman's Part.
+  
   //Variables for All Students
   //3 fixed and 1 is for entry of Data 
   int student1_id = 1645;
@@ -42,6 +43,8 @@ int main()
   int quiz_month[maximum_quizz] = {1, 1};
   int quiz_year[maximum_quizz] = {2026, 2026};
   int index_quiz3=2; // index for quiz 3
+
+
   //Variable for choice
   int choice;
   //variable for Infinite Loop for Menu
@@ -225,9 +228,11 @@ int main()
   else if (choice==9){}
   else if (choice==10){}
   else if (choice==11){}
+  //To Exit the main menu
   else if (choice==0){
     cout<<"\nProgram Exited Successfully!\n\n";
     break;}
+  //If user Enter Invalid number.
   else
     cout<<"Invalid Choice. Please try again."<<endl<<endl;
   }while(infinite_main_menu);
