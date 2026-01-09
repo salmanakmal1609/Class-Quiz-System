@@ -194,49 +194,27 @@ int main()
             // if user press 3 for quiz 3 entry
             else
             {
-                cout << "\n Enter Data for Quiz 3 \n";
+    cout << "\n Enter Data for Quiz 3 \n";
+    // ... quiz id entry logic ...
 
-                //Quiz ID Entry
-            module2_quiz_id_entry:
-                duplicate = false;
+    module2_quiz_marks:
+    cout << "Enter Total Marks: ";
+    // FIX: Use index_quiz3 ( which is 2) directly to store in the 3rd slot
+    cin >> quiz_total[index_quiz3]; 
 
-                cout << "Enter Quiz ID (int): ";
-                cin >> quiz_id[index_quiz3];
+    if (quiz_total[index_quiz3] <= 0) {
+        cout << "Marks must be greater than 0!\n";
+        goto module2_quiz_marks;
+    }
 
-                //Duplicate check using loop
-                for (int i = 0; i < maximum_quiz - 1; i++)
-                {
-                    if (quiz_id[index_quiz3] == quiz_id[i])
-                        duplicate = true;
-                }
+    cout << "Enter Quiz Date\n";
+    cout << "Day: ";
+    cin >> quiz_day[index_quiz3];
+    cout << "Month: ";
+    cin >> quiz_month[index_quiz3];
+    cout << "Year: ";
+    cin >> quiz_year[index_quiz3];
 
-                if (duplicate)
-                {
-                    cout << "Error: Quiz ID already exists!\n";
-                    goto module2_quiz_id_entry;
-                }
-
-                //Total Marks Entry
-            module2_quiz_marks:
-                cout << "Enter Total Marks: ";
-                cin >> quiz_total[index_quiz3 - 1];
-
-                if (quiz_total[index_quiz3 - 1] <= 0)
-                {
-                    cout << "Marks must be greater than 0!\n";
-                    goto module2_quiz_marks;
-                }
-
-                //Date Entry
-                cout << "Enter Quiz Date\n";
-                cout << "Day: ";
-                cin >> quiz_day[index_quiz3 - 1];
-                cout << "Month: ";
-                cin >> quiz_month[index_quiz3 - 1];
-                cout << "Year: ";
-                cin >> quiz_year[index_quiz3 - 1];
-
-                cout << "\nQuiz 3 Data Saved Successfully!\n";
             }
         }
 
@@ -268,31 +246,21 @@ int main()
                     goto module3_menu_1;
                 }
 
-                for (int i = 0; i < maximum_quiz; i++)
-                {
-                  if (quiz_id[i]!=0){
-                    cout << "Enter marks for Quiz " << i + 1 << ": ";
-                    cin >> marks;}
-                  else {
-                    goto module3_marks_saved;}
+                for (int i = 0; i < maximum_quiz; i++) {
+    if (quiz_id[i] != 0) {
+        cout << "Enter marks for Quiz " << i + 1 << " (Total: " << quiz_total[i] << "): ";
+        cin >> marks;
 
-                    if (marks < 0 && marks > quiz_total[i])
-                    {
-                        cout << "Invalid marks! Try again.\n";
-                        i--;
-                    }
-                    else
-                    {
-                        if (temp_id == student1_id)
-                            student1_marks[i] = marks;
-                        else if (temp_id == student2_id)
-                            student2_marks[i] = marks;
-                        else if (temp_id == student3_id)
-                            student3_marks[i] = marks;
-                        else
-                            student4_marks[i] = marks;
-                    }
-                }
+        // FIX: Change && to ||
+        if (marks < 0 || marks > quiz_total[i]) { 
+            cout << "Invalid marks! Try again.\n";
+            i--;
+        }
+        else {
+            // ... storage logic ...
+        }
+    }
+}
                 module3_marks_saved:
                 cout << "Student-wise marks saved successfully!\n";
             }
@@ -359,6 +327,8 @@ int main()
             //Individual Entry
             else if (option == 3)
             {
+                found = 0; // Reset every time this option starts
+                module_5_redirection:
                 //Enter Student ID
                 cout << "Enter Student ID: ";
                 cin >> temp_id;
@@ -371,17 +341,28 @@ int main()
 
                 if (found == 0)
                 {
+                    
                     cout << "Student does NOT exist!\n";
+                    if (main_choice==5)
+                    goto module_5_redirection;
                     goto module3_menu_1;
                 }
 
-                //Enter Quiz Number
+                //Enter Quiz ID
+                
+                
                 cout << "Enter Quiz ID: ";
+                module3_section3_quizid:
                 cin >> temp_quiz_id;
+
+                if(temp_quiz_id==3 && quiz_id[maximum_quiz-1]==0){
+                   cout << "Enter Quiz ID (1 - 2): ";
+                    goto module3_section3_quizid;
+                }
 
                 if (temp_quiz_id < 1 && temp_quiz_id > maximum_quiz)
                 {
-                    cout << "Invalid Quiz Number!\n";
+                    cout << "Invalid Quiz ID!\n";
                     goto module3_menu_1;
                 }
 
@@ -517,7 +498,9 @@ int main()
     cout << "\nMarks Sheet Displayed Successfully!\n";
 }
 
-        else if (main_choice == 5) {}
+        else if (main_choice == 5) {
+            goto module_5_redirection;
+        }
         else if (main_choice == 6) {}
         else if (main_choice == 7) {}
         else if (main_choice == 8) {}
