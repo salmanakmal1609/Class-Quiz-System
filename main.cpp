@@ -37,7 +37,7 @@ int main()
     //2 quizzes are fixed and 1 is for entry of Data
     const int maximum_quiz = 3;
     //Quiz data arrays
-    int quiz_id[maximum_quiz] = { 1, 2 };
+    int quiz_id[maximum_quiz] = { 1, 2 ,0};
     int quiz_total[maximum_quiz] = { 10, 10 };
 
     int quiz_day[maximum_quiz] = { 5, 10 };
@@ -53,7 +53,7 @@ int main()
     int student4_marks[maximum_quiz] = { -1, -1, -1 };
 
     int student_id;
-    int quiz_no;
+    int temp_quiz_id;
     int marks;
 
     //Variable for main_choice
@@ -163,16 +163,16 @@ int main()
         //Module 2) Enter / Replace Quiz Setup (Total Marks + Date)
         else if (main_choice == 2)
         {
-            quiz_no = 0;
+            temp_quiz_id = 0;
             cout << "\n\n================ QUIZ SETUP MENU ================\n";
             cout << "STATUS: Quiz 1 and Quiz 2 are already saved\n";
 
         module2_quiz_select:
             cout << "Press 3 to enter Quiz 3 data: ";
-            cin >> quiz_no;
+            cin >> temp_quiz_id;
 
             //Invalid quiz no
-            if (quiz_no != 3)
+            if (temp_quiz_id != 3)
             {
                 cout << "Invalid Quiz Number!\n\n";
 
@@ -270,8 +270,11 @@ int main()
 
                 for (int i = 0; i < maximum_quiz; i++)
                 {
+                  if (quiz_id[i]!=0){
                     cout << "Enter marks for Quiz " << i + 1 << ": ";
-                    cin >> marks;
+                    cin >> marks;}
+                  else {
+                    goto module3_marks_saved;}
 
                     if (marks < 0 && marks > quiz_total[i])
                     {
@@ -290,47 +293,64 @@ int main()
                             student4_marks[i] = marks;
                     }
                 }
-
+                module3_marks_saved:
                 cout << "Student-wise marks saved successfully!\n";
             }
 
             // ---------------- QUIZ-WISE ----------------
             else if (option == 2)
-            {
-                cout << "Enter Quiz Number (1 to 3): ";
-                cin >> quiz_no;
-
-                if (quiz_no < 1 || quiz_no > maximum_quiz)
+            {   module3_quizid:
+                cout << "Enter Quiz ID (1 - 3): ";
+                cin >> temp_quiz_id;
+                if (temp_quiz_id == 3 &&quiz_id[maximum_quiz-1]==0){
+                  cout<<"Quiz not exist!\n";
+                  goto module3_quizid;
+                }
+                if (temp_quiz_id < 1 || temp_quiz_id > maximum_quiz)
                 {
                     cout << "Invalid Quiz Number!\n";
                     goto module3_menu_1;
                 }
 
-                //Student 1
+                Student1_marks:
                 cout << "Enter marks for Student 1: ";
                 cin >> marks;
-                if (marks >= 0 && marks <= quiz_total[quiz_no - 1])
-                    student1_marks[quiz_no - 1] = marks;
+                if (marks >= 0 && marks <= quiz_total[temp_quiz_id - 1])
+                    student1_marks[temp_quiz_id - 1] = marks;
+                else{
+                cout<<"\nInvalid Marks!\n";
+                goto Student1_marks;
+                }
 
-                //Student 2
+                Student2_marks:
                 cout << "Enter marks for Student 2: ";
                 cin >> marks;
-                if (marks >= 0 && marks <= quiz_total[quiz_no - 1])
-                    student2_marks[quiz_no - 1] = marks;
-
-                //Student 3
+                if (marks >= 0 && marks <= quiz_total[temp_quiz_id - 1])
+                    student2_marks[temp_quiz_id - 1] = marks;
+                else{
+                cout<<"\nInvalid Marks!\n";
+                goto Student2_marks;
+                }
+                Student3_marks:
                 cout << "Enter marks for Student 3: ";
                 cin >> marks;
-                if (marks >= 0 && marks <= quiz_total[quiz_no - 1])
-                    student3_marks[quiz_no - 1] = marks;
-
+                if (marks >= 0 && marks <= quiz_total[temp_quiz_id - 1])
+                    student3_marks[temp_quiz_id - 1] = marks;
+                else{
+                cout<<"\nInvalid Marks!\n";
+                goto Student3_marks;
+                }
                 //Student 4 (only if exists)
                 if (student4_id != 0)
-                {
+                {   Student4_marks:
                     cout << "Enter marks for Student 4: ";
                     cin >> marks;
-                    if (marks >= 0 && marks <= quiz_total[quiz_no - 1])
-                        student4_marks[quiz_no - 1] = marks;
+                    if (marks >= 0 && marks <= quiz_total[temp_quiz_id - 1])
+                        student4_marks[temp_quiz_id - 1] = marks;
+                    else{
+                cout<<"\nInvalid Marks!\n";
+                goto Student4_marks;
+                }
                 }
 
                 cout << "Quiz-wise marks saved successfully!\n";
@@ -356,10 +376,10 @@ int main()
                 }
 
                 //Enter Quiz Number
-                cout << "Enter Quiz Number (1 to 3): ";
-                cin >> quiz_no;
+                cout << "Enter Quiz ID: ";
+                cin >> temp_quiz_id;
 
-                if (quiz_no < 1 || quiz_no > maximum_quiz)
+                if (temp_quiz_id < 1 && temp_quiz_id > maximum_quiz)
                 {
                     cout << "Invalid Quiz Number!\n";
                     goto module3_menu_1;
@@ -369,22 +389,22 @@ int main()
                 cout << "Enter Marks: ";
                 cin >> marks;
 
-                if (marks < 0 || marks > quiz_total[quiz_no - 1])
+                if (marks < 0 || marks > quiz_total[temp_quiz_id - 1])
                 {
                     cout << "Invalid Marks!\n";
-                    cout << "Range is : 0 to " << quiz_total[quiz_no - 1] << endl;
+                    cout << "Range is : 0 to " << quiz_total[temp_quiz_id - 1] << endl;
                     goto module3_menu_1;
                 }
 
                 //Store marks
                 if (student_id == student1_id)
-                    student1_marks[quiz_no - 1] = marks;
+                    student1_marks[temp_quiz_id - 1] = marks;
                 else if (student_id == student2_id)
-                    student2_marks[quiz_no - 1] = marks;
+                    student2_marks[temp_quiz_id - 1] = marks;
                 else if (student_id == student3_id)
-                    student3_marks[quiz_no - 1] = marks;
+                    student3_marks[temp_quiz_id - 1] = marks;
                 else if (student_id == student4_id)
-                    student4_marks[quiz_no - 1] = marks;
+                    student4_marks[temp_quiz_id - 1] = marks;
 
                 cout << "Marks Entered / Updated Successfully!\n";
 
