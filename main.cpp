@@ -416,18 +416,20 @@ int main()
         }
         //4) Display Complete Marks Sheet
         else if (main_choice == 4)
-{
+        {
+            total = 0;
     
 
     cout << "\n\n================ COMPLETE MARKS SHEET ================\n\n";
 
-    // ---------------- STUDENT 1 ----------------
+    // student 1
     cout << "Student ID   : " << student1_id << endl;
     cout << "Student Name : " << student1_name << endl;
-    total = 0;
+    
 
     for (int i = 0; i < maximum_quiz; i++)
     {
+        // if quiz 3 not registered so it can't print
         if (quiz_id[i] != 0)
         {
             cout << "Quiz " << i + 1 << " Marks: ";
@@ -436,14 +438,14 @@ int main()
             else
             {
                 cout << student1_marks[i] << endl;
-                total = total + student1_marks[i];
+                total += student1_marks[i];
             }
         }
     }
     cout << "Total Obtained Marks: " << total << endl;
     cout << "--------------------------------------------\n";
 
-    // ---------------- STUDENT 2 ----------------
+    // student 2
     cout << "Student ID   : " << student2_id << endl;
     cout << "Student Name : " << student2_name << endl;
     total = 0;
@@ -458,14 +460,14 @@ int main()
             else
             {
                 cout << student2_marks[i] << endl;
-                total = total + student2_marks[i];
+                total += student2_marks[i];
             }
         }
     }
     cout << "Total Obtained Marks: " << total << endl;
     cout << "--------------------------------------------\n";
 
-    // ---------------- STUDENT 3 ----------------
+    // student 3
     cout << "Student ID   : " << student3_id << endl;
     cout << "Student Name : " << student3_name << endl;
     total = 0;
@@ -480,14 +482,14 @@ int main()
             else
             {
                 cout << student3_marks[i] << endl;
-                total = total + student3_marks[i];
+                total += student3_marks[i];
             }
         }
     }
     cout << "Total Obtained Marks: " << total << endl;
     cout << "--------------------------------------------\n";
 
-    // ---------------- STUDENT 4 (IF EXISTS) ----------------
+    //  student 4 if exist 
     if (student4_id != 0)
     {
         cout << "Student ID   : " << student4_id << endl;
