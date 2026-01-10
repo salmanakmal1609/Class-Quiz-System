@@ -65,6 +65,11 @@ int main()
     int count = 0;
     char grade;
 
+
+    //-----------------------------------Module 10 variables
+    int issue_found = 0;
+    int temp_missing= -1;
+
     //Variable for main_choice
     int main_choice;
     // for all types of choices
@@ -745,10 +750,53 @@ module6_menu2:
         //9) Search / Listings
         else if (main_choice == 9) {}
 
-        //11) Generate Reports / Summaries
-        else if (main_choice == 10) {}
-
         //10) Validate Data & Detect Issues
+        else if (main_choice == 10)
+        {
+          cout << "\n\n================ DATA VALIDATION REPORT ================\n";
+          issue_found = 0;
+
+          for (int i = 0; i < maximum_quiz; i++)
+          {
+              if (quiz_id[i] == 0) continue; // Skip unregistered quizzes
+
+              // Check Quiz Setup
+              if (quiz_total[i] <= 0) 
+              {
+                  cout << "ERROR: Quiz " << (i + 1) << " total marks invalid!\n";
+                  issue_found = 1;
+              }
+              // Check Students 1-4
+              for (int j = 1; j <= 4; j++) 
+              {
+                  temp_missing = -1;
+                  
+                  if (j == 1)      temp_missing = student1_marks[i];
+                  else if (j == 2) temp_missing = student2_marks[i];
+                  else if (j == 3) temp_missing = student3_marks[i];
+                  else if (j == 4 && student4_id != 0) temp_missing = student4_marks[i];
+                  else continue; 
+
+                  // Out of Range This PART CANNOT BE EXECUATED BECAUSE IT CAN'T STORE 
+                  //MARKS THAT ARE OUT OF RANGE DUE TO MODULE 3.
+
+                  // agar 
+                  if (temp_missing == 0 || temp_missing > quiz_total[i]) {
+                      cout << "[ERROR] Student " << i+1 << " | Quiz " << (j) << " marks out of range!\n";
+                      issue_found = 1;
+                  }
+                  // Missing Marks
+                  else if (temp_missing == -1) {
+                      cout << "[MISSING] Student " << i+1 << " | Quiz " << (j) << " marks missing\n";
+                  }
+              }
+          }
+
+              if (!issue_found) cout << "\nSTATUS: Data is clean.\n";
+              else cout << "\nSTATUS: Issues found. Please fix.\n";
+        }
+
+        //11) Generate Reports / Summaries
         else if (main_choice == 11) {}
         //12) System Policys & Guidelines
         else if (main_choice == 12) 
