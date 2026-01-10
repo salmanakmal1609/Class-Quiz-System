@@ -779,14 +779,16 @@ module6_menu2:
 
                   // Out of Range This PART CANNOT BE EXECUATED BECAUSE IT CAN'T STORE 
                   //MARKS THAT ARE OUT OF RANGE DUE TO MODULE 3.
-
-                  // agar 
-                  if (temp_missing == 0 || temp_missing > quiz_total[i]) {
+                  // agar marks 0 ya 0 se chote hon toh or total se zyada hon toh error dega
+                  if (temp_missing == 0 || temp_missing > quiz_total[i]) 
+                  {
                       cout << "[ERROR] Student " << i+1 << " | Quiz " << (j) << " marks out of range!\n";
                       issue_found = 1;
                   }
+                  
                   // Missing Marks
-                  else if (temp_missing == -1) {
+                  else if (temp_missing == -1) 
+                  {
                       cout << "[MISSING] Student " << i+1 << " | Quiz " << (j) << " marks missing\n";
                   }
               }
