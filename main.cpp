@@ -4,6 +4,7 @@ using namespace std;
 int main()
 {
     //------------------------------Variables for module 1
+    const int maximum_students = 4;
     //3 fixed and 1 is for entry of Data 
     int student1_id = 1645;
     int student2_id = 1935;
@@ -54,6 +55,16 @@ int main()
     //----------------------------------Module 4 variable
     int total;
 
+    //-----------------------------------Module 6 variables
+    int student_marks_sum[maximum_students]   = {0, 0, 0, 0};
+    int student_avg[maximum_students]   = {0, 0, 0, 0};
+    char student_grade[maximum_students]      = {'X','X','X','X'};
+
+    int sum = 0;
+    int average = 0;
+    int count = 0;
+    char grade;
+
     //Variable for main_choice
     int main_choice;
     // for all types of choices
@@ -84,6 +95,7 @@ main_menu:
         cout << "9) Search / Listings\n";
         cout << "10) Validate Data & Detect Issues\n";
         cout << "11) Generate Reports / Summaries\n";
+        cout << "12) System Policys & Guidelines\n";
         cout << "0) Exit\n";
         cout << "--------------------------------------------\n";
         cout << "Enter your choice: ";
@@ -294,7 +306,7 @@ module3_quizid:
                     cout << "Invalid Quiz Number!\n";
                     goto module3_menu_1;
                 }
-
+                cout<<"Total Marks: "<<quiz_total[temp_quiz_id-1]<<"\n";
 Student1_marks:
                 cout << "Enter marks for Student 1: ";
                 cin >> marks;
@@ -418,10 +430,12 @@ module3_section3_marks:
                 cout << "Invalid Option!\n";
             }
         }
+       
         //4) Update Marks (Student ID + Quiz)
         else if (main_choice == 4) {
             goto module_4_redirection;
         }
+        
         //5) Display Complete Marks Sheet
         else if (main_choice == 5)
         {
@@ -520,14 +534,242 @@ module3_section3_marks:
             }
             cout << "\nMarks Sheet Displayed Successfully!\n";
         }
+        
+        //6) Display Individual Student Result Card
+        else if (main_choice == 6)
+        {
+          temp_id=0;
+            cout << "\n\n=========== INDIVIDUAL STUDENT RESULT CARD ===========\n";
+module6_id_entry:
+            cout << "\nEnter Student ID: ";
+            cin >> temp_id;
+module6_calculations:
+            option=0;
+            sum = 0;
+            count = 0;
+            average = 0;
+            found = 0;
 
-        else if (main_choice == 6) {}
+            
+
+            // ----------- CALCULATE SUM & COUNT -----------
+            if (temp_id == student1_id)
+            {
+                for (int i = 0; i < maximum_quiz; i++)
+                {
+                    if (student1_marks[i] != -1)
+                    {
+                        sum += student1_marks[i];
+                        count++;
+                    }
+                }
+            }
+            else if (temp_id == student2_id)
+            {
+                for (int i = 0; i < maximum_quiz; i++)
+                {
+                    if (student2_marks[i] != -1)
+                    {
+                        sum += student2_marks[i];
+                        count++;
+                    }
+                }
+            }
+            else if (temp_id == student3_id)
+            {
+                for (int i = 0; i < maximum_quiz; i++)
+                {
+                    if (student3_marks[i] != -1)
+                    {
+                        sum += student3_marks[i];
+                        count++;
+                    }
+                }
+            }
+            else if (temp_id == student4_id)
+            {
+                for (int i = 0; i < maximum_quiz; i++)
+                {
+                    if (student4_marks[i] != -1)
+                    {
+                        sum += student4_marks[i];
+                        count++;
+                    }
+                }
+            }
+            // Invalid Student ID
+            else
+            {
+module6_menu2:
+                cout << "\nInvalid Student ID!\n";
+                cout <<"1) Try Again \n2) Main Menu\n";
+                cin>>option;
+                if (option==1) goto module6_id_entry;
+                else if (option==2) goto main_menu;
+                else
+                goto module6_menu2;
+            }
+            // No marks entered case
+            if (count == 0)
+            {
+                cout << "\nNo marks entered for this student!\n";
+                goto module6_menu2;
+            }
+
+            // AVERAGE & GRADE CALCULATION
+            average = sum / count;
+            if (average >= 85) grade = 'A';
+            else if (average >= 70) grade = 'B';
+            else if (average >= 50) grade = 'C';
+            else if (average >= 40) grade = 'D';
+            else grade = 'F';
+
+            // STORE IN ARRAYS 
+            if (temp_id == student1_id)
+            {
+                student_marks_sum[0] = sum;
+                student_avg[0]       = average;
+                student_grade[0]    = grade;
+            }
+            else if (temp_id == student2_id)
+            {
+                student_marks_sum[1] = sum;
+                student_avg[1]       = average;
+                student_grade[1]    = grade;
+            }
+            else if (temp_id == student3_id)
+            {
+                student_marks_sum[2] = sum;
+                student_avg[2]       = average;
+                student_grade[2]    = grade;
+            }
+            else if (temp_id == student4_id)
+            {
+                student_marks_sum[3] = sum;
+                student_avg[3]       = average;
+                student_grade[3]    = grade;
+            }
+
+            // Display Card
+            if (temp_id == student1_id)
+            {
+                found = 1;
+                cout << "\nStudent Name : " << student1_name;
+                cout << "\nStudent ID   : " << student1_id << endl;
+                for (int i = 0; i < maximum_quiz; i++)
+                {
+                    if (quiz_id[i] != 0)
+                    {
+                        cout << "Quiz " << i + 1 << " Marks: ";
+                        if (student1_marks[i] == -1) cout << "NA\n";
+                        else cout << student1_marks[i] << endl;
+                    }
+                }
+                cout << "Total Marks  : " << student_marks_sum[0] << endl;
+                cout << "Average      : " << student_avg[0] << endl;
+                cout << "Grade        : " << student_grade[0] << endl;
+            }
+            else if (temp_id == student2_id)
+            {
+                found = 1;
+                cout << "\nStudent Name : " << student2_name;
+                cout << "\nStudent ID   : " << student2_id << endl;
+                for (int i = 0; i < maximum_quiz; i++)
+                {
+                    if (quiz_id[i] != 0)
+                    {
+                        cout << "Quiz " << i + 1 << " Marks: ";
+                        if (student2_marks[i] == -1) cout << "NA\n";
+                        else cout << student2_marks[i] << endl;
+                    }
+                }
+                cout << "Total Marks  : " << student_marks_sum[1] << endl;
+                cout << "Average      : " << student_avg[1] << endl;
+                cout << "Grade        : " << student_grade[1] << endl;
+            }
+            else if (temp_id == student3_id)
+            {
+                found = 1;
+                cout << "\nStudent Name : " << student3_name;
+                cout << "\nStudent ID   : " << student3_id << endl;
+                for (int i = 0; i < maximum_quiz; i++)
+                {
+                    if (quiz_id[i] != 0)
+                    {
+                        cout << "Quiz " << i + 1 << " Marks: ";
+                        if (student3_marks[i] == -1) cout << "NA\n";
+                        else cout << student3_marks[i] << endl;
+                    }
+                }
+                cout << "Total Marks  : " << student_marks_sum[2] << endl;
+                cout << "Average      : " << student_avg[2] << endl;
+                cout << "Grade        : " << student_grade[2] << endl;
+            }
+            else if (temp_id == student4_id)
+            {
+                found = 1;
+                cout << "\nStudent Name : " << student4_name;
+                cout << "\nStudent ID   : " << student4_id << endl;
+                for (int i = 0; i < maximum_quiz; i++)
+                {
+                    if (quiz_id[i] != 0)
+                    {
+                        cout << "Quiz " << i + 1 << " Marks: ";
+                        if (student4_marks[i] == -1) cout << "NA\n";
+                        else cout << student4_marks[i] << endl;
+                    }
+                }
+                cout << "Total Marks  : " << student_marks_sum[3] << endl;
+                cout << "Average      : " << student_avg[3] << endl;
+                cout << "Grade        : " << student_grade[3] << endl;
+            }
+            else {
+                cout << "Student not found!\n";
+                goto main_menu;
+            }
+            // Pass / Fail Display
+            if (grade == 'F')
+                cout << "Result       : FAIL\n";
+            else
+                cout << "Result       : PASS\n";
+
+            cout << "=====================================================\n";
+        }
+        
+        //7) Quiz-wise Statistics
         else if (main_choice == 7) {}
-        else if (main_choice == 8) {}
-        else if (main_choice == 9) {}
-        else if (main_choice == 10) {}
-        else if (main_choice == 11) {}
 
+        //8) Generate Ranking / Top Performers
+        else if (main_choice == 8) {}
+
+        //9) Search / Listings
+        else if (main_choice == 9) {}
+
+        //11) Generate Reports / Summaries
+        else if (main_choice == 10) {}
+
+        //10) Validate Data & Detect Issues
+        else if (main_choice == 11) {}
+        //12) System Policys & Guidelines
+        else if (main_choice == 12) 
+        {
+          cout << "\n================ SYSTEM POLICIES & GUIDELINES ================\n";
+          cout << "1. CAPACITY LIMITS:\n";
+          cout << "   - Maximum Students: 4 (3 Fixed + 1 User-defined)\n";
+          cout << "   - Maximum Quizzes : 3 (2 Fixed + 1 User-defined)\n";
+          cout << "\n2. GRADING SCALE:\n";
+          cout << "   - A: >= 85% | B: >= 70% | C: >= 50% | D: >= 40% | F: < 40%\n";
+          cout << "   - Minimum Passing Marks: 40%\n";
+          cout << "\n3. DATA VALIDATION:\n";
+          cout << "   - Student IDs must be unique; duplicates are rejected.\n";
+          cout << "   - Marks must be between 0 and Total Marks for that quiz.\n";
+          cout << "   - 'NA' indicates marks not yet entered for a student.\n";
+          cout << "\n4. TECHNICAL CONSTRAINTS:\n";
+          cout << "   - Built using static arrays (No Dynamic Memory/Vectors).\n";
+          cout << "   - No external libraries used except <iostream>.\n";
+          cout << "   - All calculations performed via manual loops.\n";
+          cout << "============================================================\n";
+        }
         //To Exit the main menu
         else if (main_choice == 0) {
             cout << "\nProgram Exited Successfully!\n\n";
