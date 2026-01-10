@@ -1,0 +1,53 @@
+# VS Code / Visual Studio files
+.vscode/
+.vs/
+.vs/**
+
+# Explicit workspace / properties
+CppProperties.json
+*.code-workspace
+
+# Executables
+*.exe
+quiz_system.exe
+
+# C++ build artifacts
+*.obj
+*.o
+*.out
+
+# Object files
+*.a
+*.lib
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiler cache
+*.cache
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+build/
+Debug/
+Release/
