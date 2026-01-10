@@ -281,6 +281,7 @@ int main()
                 cout << "Enter Quiz ID ";
                 if(quiz_id[index_quiz3]==0)
                   cout << "(1 - 2): ";
+                  
                 else
                   cout << "(1 - 3): ";
                 cin >> temp_quiz_id;
