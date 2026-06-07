@@ -1304,7 +1304,11 @@ int main()
 
                 if (count > 0)
                 {
-                    average = sum / count;
+                    int total_possible = 0;
+                    for (int i = 0; i < maximum_quiz; i++)
+                        if (quiz_id[i] != 0) total_possible += quiz_total[i];
+                    average = (sum * 100) / total_possible;
+
                     if (average >= 85) grade_a++;
                     else if (average >= 70) grade_b++;
                     else if (average >= 50) grade_c++;
