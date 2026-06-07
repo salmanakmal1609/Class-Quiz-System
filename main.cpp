@@ -11,10 +11,10 @@ int main()
     int student3_id = 1635;
     int student4_id = 0; // To be entered by user.
 
-    char student1_name[20] = "Husnain Mansoor";
-    char student2_name[20] = "Ahmad Arslan";
-    char student3_name[20] = "Abdul Moiz";
-    char student4_name[20];
+    char student1_name[50] = "Husnain Mansoor";
+    char student2_name[50] = "Ahmad Arslan";
+    char student3_name[50] = "Abdul Moiz";
+    char student4_name[50];
 
     char student1_section[10] = "A16";
     char student2_section[10] = "A16";
@@ -30,7 +30,7 @@ int main()
     int student2_semester = 1;
     int student3_semester = 1;
     int student4_semester = 0;
-    //for every student no we use in this
+    //for every student no. we use in this
     int student_no;
 
     //---------------------Module 2 Variables
@@ -38,7 +38,7 @@ int main()
     const int maximum_quiz = 3;
     //Quiz data arrays
     int quiz_id[maximum_quiz] = { 1, 2 ,0 };
-    int quiz_total[maximum_quiz] = { 10, 10 };
+    float quiz_total[maximum_quiz] = { 10, 10 };
 
     int quiz_day[maximum_quiz] = { 5, 10 };
     int quiz_month[maximum_quiz] = { 1, 1 };
@@ -47,43 +47,43 @@ int main()
 
 
     //------------------------------------------- Module 3 variables
-    int student1_marks[maximum_quiz] = { -1, -1, -1 };
-    int student2_marks[maximum_quiz] = { -1, -1, -1 };
-    int student3_marks[maximum_quiz] = { -1, -1, -1 };
-    int student4_marks[maximum_quiz] = { -1, -1, -1 };
+    float student1_marks[maximum_quiz] = { -1, -1, -1 };
+    float student2_marks[maximum_quiz] = { -1, -1, -1 };
+    float student3_marks[maximum_quiz] = { -1, -1, -1 };
+    float student4_marks[maximum_quiz] = { -1, -1, -1 };
 
     //----------------------------------Module 4 variable
-    int total;
+    float total;
 
     //-----------------------------------Module 6 variables
-    int student_marks_sum[maximum_students] = { 0, 0, 0, 0 };
-    int student_avg[maximum_students] = { 0, 0, 0, 0 };
+    float student_marks_sum[maximum_students] = { 0, 0, 0, 0 };
+    float student_avg[maximum_students] = { 0, 0, 0, 0 };
     char student_grade[maximum_students] = { 'X','X','X','X' };
 
-    int sum = 0;
-    int average = 0;
+    float sum = 0;
+    float average = 0;
     int count = 0;
     char grade;
 
     //----------------------------------Module 7 variable
     int quiz_selection = 0;
-    int highest_marks = 0;
-    int lowest_marks = 0;
-    int class_average = 0;
+    float highest_marks = 0;
+    float lowest_marks = 0;
+    float class_average = 0;
     int threshold = 0;
     int above_threshold = 0;
     int below_threshold = 0;
 
     //----------------------------------Module 8 variable
-    int temp_total_marks[maximum_students] = { 0, 0, 0, 0 };
+    float temp_total_marks[maximum_students] = { 0, 0, 0, 0 };
     int rank_order[maximum_students] = { 0, 1, 2, 3 };
     int temp_rank = 0;
     int temp_swap = 0;
 
     //----------------------------------Module 9 variable
     int search_option = 0;
-    int range_min = 0;
-    int range_max = 0;
+    float range_min = 0;
+    float range_max = 0;
     int pass_count = 0;
     int fail_count = 0;
 
@@ -91,12 +91,12 @@ int main()
 
     //----------------------------------Module 10 variable
     int issue_found = 0;
-    int temp_missing = -1;
+    float temp_missing = -1;
 
     //Variable for main_choice
     int main_choice;
     // for all types of choices
-    int marks;
+    float marks;
     int option;
     int found;
     int temp_id;
@@ -108,9 +108,9 @@ int main()
     //----------------------------------Module 11 variable
     int total_valid_students = 0;
     int total_valid_quizzes = 0;
-    int overall_sum = 0;
+    float overall_sum = 0;
     int overall_count = 0;
-    int overall_average = 0;
+    float overall_average = 0;
     int grade_a = 0, grade_b = 0, grade_c = 0, grade_d = 0, grade_f = 0;
     do {
     main_menu:
@@ -652,7 +652,16 @@ int main()
             }
 
             // AVERAGE & GRADE CALCULATION
-            average = sum / count;
+            int total_possible = 0;
+            for (int i = 0; i < maximum_quiz; i++)
+                if (quiz_id[i] != 0) total_possible += quiz_total[i];
+
+            if (total_possible > 0) {
+                average = (sum * 100) / total_possible;
+            } else {
+                average = 0;
+            }
+
             if (average >= 85) grade = 'A';
             else if (average >= 70) grade = 'B';
             else if (average >= 50) grade = 'C';
@@ -798,13 +807,15 @@ int main()
 
             // Initialize statistics
             highest_marks = -1;
-            lowest_marks = 101;
+            lowest_marks = quiz_total[quiz_selection - 1];
             class_average = 0;
             above_threshold = 0;
             below_threshold = 0;
             int valid_marks_count = 0;
-            int marks_sum = 0;
-            threshold = 5; // Default threshold (can be made user-input)
+            float marks_sum = 0;
+            threshold = 5;
+
+            
 
             // Calculate statistics for selected quiz
             int current_marks_array[maximum_students];
@@ -886,6 +897,7 @@ int main()
         else if (main_choice == 8)
         {
             cout << "\n\n================ RANKING / TOP PERFORMERS ================\n";
+            rank_order[0] = 0; rank_order[1] = 1; rank_order[2] = 2; rank_order[3] = 3;
 
             // Calculate total marks for each student
             temp_total_marks[0] = 0;
@@ -903,6 +915,7 @@ int main()
                     if (student4_id != 0 && student4_marks[i] != -1) temp_total_marks[3] += student4_marks[i];
                 }
             }
+            
 
             // Bubble sort: Sort students by total marks (descending)
             for (int i = 0; i < maximum_students - 1; i++)
@@ -1067,34 +1080,38 @@ int main()
                 {
                     sum = 0;
                     count = 0;
-                    int current_id = (idx == 0) ? student1_id : (idx == 1) ? student2_id : (idx == 2) ? student3_id : student4_id;
-                    int* current_marks = (idx == 0) ? student1_marks : (idx == 1) ? student2_marks : (idx == 2) ? student3_marks : student4_marks;
-                    char* current_name = (idx == 0) ? student1_name : (idx == 1) ? student2_name : (idx == 2) ? student3_name : student4_name;
 
-                    if (current_id == 0) continue;
-
-                    for (int i = 0; i < maximum_quiz; i++)
-                    {
-                        if (current_marks[i] != -1)
-                        {
-                            sum += current_marks[i];
-                            count++;
-                        }
+                    if (idx == 0) {
+                        if (student1_id == 0) continue;
+                        for (int i = 0; i < maximum_quiz; i++)
+                            if (student1_marks[i] != -1) { sum += student1_marks[i]; count++; }
+                        if (count > 0) { average = sum / count; }
+                        if (count > 0 && average >= 40) { cout << "PASS: " << student1_id << " - " << student1_name << " (Avg: " << average << ")\n"; pass_count++; }
+                        else if (count > 0)             { cout << "FAIL: " << student1_id << " - " << student1_name << " (Avg: " << average << ")\n"; fail_count++; }
                     }
-
-                    if (count > 0)
-                    {
-                        average = sum / count;
-                        if (average >= 40)
-                        {
-                            cout << "PASS: " << current_id << " - " << current_name << " (Avg: " << average << ")\n";
-                            pass_count++;
-                        }
-                        else
-                        {
-                            cout << "FAIL: " << current_id << " - " << current_name << " (Avg: " << average << ")\n";
-                            fail_count++;
-                        }
+                    else if (idx == 1) {
+                        if (student2_id == 0) continue;
+                        for (int i = 0; i < maximum_quiz; i++)
+                            if (student2_marks[i] != -1) { sum += student2_marks[i]; count++; }
+                        if (count > 0) { average = sum / count; }
+                        if (count > 0 && average >= 40) { cout << "PASS: " << student2_id << " - " << student2_name << " (Avg: " << average << ")\n"; pass_count++; }
+                        else if (count > 0)             { cout << "FAIL: " << student2_id << " - " << student2_name << " (Avg: " << average << ")\n"; fail_count++; }
+                    }
+                    else if (idx == 2) {
+                        if (student3_id == 0) continue;
+                        for (int i = 0; i < maximum_quiz; i++)
+                            if (student3_marks[i] != -1) { sum += student3_marks[i]; count++; }
+                        if (count > 0) { average = sum / count; }
+                        if (count > 0 && average >= 40) { cout << "PASS: " << student3_id << " - " << student3_name << " (Avg: " << average << ")\n"; pass_count++; }
+                        else if (count > 0)             { cout << "FAIL: " << student3_id << " - " << student3_name << " (Avg: " << average << ")\n"; fail_count++; }
+                    }
+                    else if (idx == 3) {
+                        if (student4_id == 0) continue;
+                        for (int i = 0; i < maximum_quiz; i++)
+                            if (student4_marks[i] != -1) { sum += student4_marks[i]; count++; }
+                        if (count > 0) { average = sum / count; }
+                        if (count > 0 && average >= 40) { cout << "PASS: " << student4_id << " - " << student4_name << " (Avg: " << average << ")\n"; pass_count++; }
+                        else if (count > 0)             { cout << "FAIL: " << student4_id << " - " << student4_name << " (Avg: " << average << ")\n"; fail_count++; }
                     }
                 }
                 cout << "\nTotal Passed: " << pass_count << " | Total Failed: " << fail_count << endl;
@@ -1112,24 +1129,34 @@ int main()
                 {
                     sum = 0;
                     count = 0;
-                    int current_id = (idx == 0) ? student1_id : (idx == 1) ? student2_id : (idx == 2) ? student3_id : student4_id;
-                    int* current_marks = (idx == 0) ? student1_marks : (idx == 1) ? student2_marks : (idx == 2) ? student3_marks : student4_marks;
-                    char* current_name = (idx == 0) ? student1_name : (idx == 1) ? student2_name : (idx == 2) ? student3_name : student4_name;
 
-                    if (current_id == 0) continue;
-
-                    for (int i = 0; i < maximum_quiz; i++)
-                    {
-                        if (current_marks[i] != -1)
-                        {
-                            sum += current_marks[i];
-                            count++;
-                        }
+                    if (idx == 0) {
+                        if (student1_id == 0) continue;
+                        for (int i = 0; i < maximum_quiz; i++)
+                            if (student1_marks[i] != -1) { sum += student1_marks[i]; count++; }
+                        if (count > 0 && sum >= range_min && sum <= range_max)
+                            cout << student1_id << " - " << student1_name << " (Total: " << sum << ")\n";
                     }
-
-                    if (count > 0 && sum >= range_min && sum <= range_max)
-                    {
-                        cout << current_id << " - " << current_name << " (Total: " << sum << ")\n";
+                    else if (idx == 1) {
+                        if (student2_id == 0) continue;
+                        for (int i = 0; i < maximum_quiz; i++)
+                            if (student2_marks[i] != -1) { sum += student2_marks[i]; count++; }
+                        if (count > 0 && sum >= range_min && sum <= range_max)
+                            cout << student2_id << " - " << student2_name << " (Total: " << sum << ")\n";
+                    }
+                    else if (idx == 2) {
+                        if (student3_id == 0) continue;
+                        for (int i = 0; i < maximum_quiz; i++)
+                            if (student3_marks[i] != -1) { sum += student3_marks[i]; count++; }
+                        if (count > 0 && sum >= range_min && sum <= range_max)
+                            cout << student3_id << " - " << student3_name << " (Total: " << sum << ")\n";
+                    }
+                    else if (idx == 3) {
+                        if (student4_id == 0) continue;
+                        for (int i = 0; i < maximum_quiz; i++)
+                            if (student4_marks[i] != -1) { sum += student4_marks[i]; count++; }
+                        if (count > 0 && sum >= range_min && sum <= range_max)
+                            cout << student4_id << " - " << student4_name << " (Total: " << sum << ")\n";
                     }
                 }
             }
@@ -1170,16 +1197,14 @@ int main()
                     // Out of Range This PART CANNOT BE EXECUATED BECAUSE IT CAN'T STORE 
                     //MARKS THAT ARE OUT OF RANGE DUE TO MODULE 3.
                     // agar marks 0 ya 0 se chote hon toh or total se zyada hon toh error dega
-                    if (temp_missing == 0 || temp_missing > quiz_total[i])
+                    if (temp_missing > quiz_total[i])
                     {
-                        cout << "[ERROR] Student " << i + 1 << " | Quiz " << (j) << " marks out of range!\n";
+                        cout << "[ERROR] Student " << j << " | Quiz " << (i + 1) << " marks out of range!\n";
                         issue_found = 1;
                     }
-
-                    // Missing Marks
                     else if (temp_missing == -1)
                     {
-                        cout << "[MISSING] Student " << i + 1 << " | Quiz " << (j) << " marks missing\n";
+                        cout << "[MISSING] Student " << j << " | Quiz " << (i + 1) << " marks missing\n";
                     }
                 }
             }
@@ -1232,9 +1257,9 @@ int main()
             {
                 if (quiz_id[i] != 0)
                 {
-                    int quiz_sum = 0;
+                    float quiz_sum = 0;
                     int quiz_count = 0;
-                    int quiz_avg = 0;
+                    float quiz_avg = 0;
 
                     if (student1_marks[i] != -1) quiz_sum += student1_marks[i], quiz_count++;
                     if (student2_marks[i] != -1) quiz_sum += student2_marks[i], quiz_count++;
@@ -1258,18 +1283,23 @@ int main()
             {
                 sum = 0;
                 count = 0;
-                int* current_marks = (idx == 0) ? student1_marks : (idx == 1) ? student2_marks : (idx == 2) ? student3_marks : student4_marks;
-                int current_id = (idx == 0) ? student1_id : (idx == 1) ? student2_id : (idx == 2) ? student3_id : student4_id;
 
-                if (current_id == 0) continue;
-
-                for (int i = 0; i < maximum_quiz; i++)
-                {
-                    if (current_marks[i] != -1)
-                    {
-                        sum += current_marks[i];
-                        count++;
-                    }
+                if (idx == 0) {
+                    for (int i = 0; i < maximum_quiz; i++)
+                        if (student1_marks[i] != -1) { sum += student1_marks[i]; count++; }
+                }
+                else if (idx == 1) {
+                    for (int i = 0; i < maximum_quiz; i++)
+                        if (student2_marks[i] != -1) { sum += student2_marks[i]; count++; }
+                }
+                else if (idx == 2) {
+                    for (int i = 0; i < maximum_quiz; i++)
+                        if (student3_marks[i] != -1) { sum += student3_marks[i]; count++; }
+                }
+                else if (idx == 3) {
+                    if (student4_id == 0) continue;
+                    for (int i = 0; i < maximum_quiz; i++)
+                        if (student4_marks[i] != -1) { sum += student4_marks[i]; count++; }
                 }
 
                 if (count > 0)
