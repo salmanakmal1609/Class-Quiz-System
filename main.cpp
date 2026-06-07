@@ -130,7 +130,6 @@ int main()
         cout << "9) Search / Listings\n";
         cout << "10) Validate Data & Detect Issues\n";
         cout << "11) Generate Reports / Summaries\n";
-        cout << "12) System Policys & Guidelines\n";
         cout << "0) Exit\n";
         cout << "--------------------------------------------\n";
         cout << "Enter your choice: ";
@@ -141,56 +140,76 @@ int main()
         if (main_choice == 1)
         {
             student_no = 0;
+            bool m1_go_main = false;
             cout << "\n\n================ STUDENT RECORD ACCESS ================\n";
             cout << " STATUS: [3] Records Locked | [1] Slot Available\n";
 
-        module1_student_no:
-            cout << "Press 4 if you want to edit 4th slot\t:\t";
-            cin >> student_no;
-
-            //If user Enter Wrong Student number eg: 0 or 5 or 10 so it will go to again entry.
-            if (student_no != 4)
+            while (true)
             {
-                cout << "Invalid Number of Student. Please try again." << endl;
-            module1_menu1:
-                cout << "1) Try Again\n";
-                cout << "2) Return to Main Menu\n";
-                cin >> main_choice;
-                //if main_choice == 1 it again ask for press 4 
-                if (main_choice == 1) goto module1_student_no;
+                cout << "Press 4 if you want to edit 4th slot\t:\t";
+                cin >> student_no;
 
-                //if main_choice == 2 it goes to main menu
-                else if (main_choice == 2) goto main_menu;
-                //If user enter invalid value it again show current menu
+                //If user Enter Wrong Student number eg: 0 or 5 or 10 so it will go to again entry.
+                if (student_no != 4)
+                {
+                    cout << "Invalid Number of Student. Please try again." << endl;
+                    while (true)
+                    {
+                        cout << "1) Try Again\n";
+                        cout << "2) Return to Main Menu\n";
+                        cin >> main_choice;
+                        //if main_choice == 1 it again ask for press 4 
+                        if (main_choice == 1) break; // retry student_no
 
+                        //if main_choice == 2 it goes to main menu
+                        else if (main_choice == 2) { m1_go_main = true; break; }
+                        //If user enter invalid value it again show current menu
+
+                        else
+                        cout << "Invalid main_choice." << endl;
+                        
+                    }
+                    if (m1_go_main) break;
+                    continue; // retry student_no input
+                }
                 else
                 {
-                    cout << "Invalid main_choice." << endl;
-                    goto module1_menu1;
+                    break; // valid input, proceed to data entry
                 }
             }
-            else
+
+            if (!m1_go_main)
             {
                 // Module 1 Data entry Menu.
-            module1_menu2:
-                cout << "Data Entry for Student 4\n";
-                temp_id = -1;
-                do
+                while (true)
                 {
-                    duplicate = false;
-                    cout << "ID \t\t:\t";
-                    cin >> temp_id;
-                    if (temp_id <= 0)
+                    cout << "Data Entry for Student 4\n";
+                    temp_id = -1;
+                    bool id_invalid = false;
+                    while (true)
                     {
-                        cout << "\nInvalid ID!\n";
-                        goto module1_menu2;
+                        duplicate = false;
+                        id_invalid = false;
+                        cout << "ID \t\t:\t";
+                        cin >> temp_id;
+                        if (temp_id <= 0)
+                        {
+                            cout << "\nInvalid ID!\n";
+                            id_invalid = true;
+                            break; // break loop, retry outer while
+                        }
+                        if (temp_id == student1_id || temp_id == student2_id || temp_id == student3_id)
+                        {
+                            cout << "Error: ID already exists!\n";
+                            duplicate = true;
+                        }
+                        
+                        if (!duplicate) break;
                     }
-                    if (temp_id == student1_id || temp_id == student2_id || temp_id == student3_id)
-                    {
-                        cout << "Error: ID already exists!\n";
-                        duplicate = true;
-                    }
-                } while (duplicate);
+
+                    if (id_invalid) continue; // retry data entry from top
+                    break; // valid ID, proceed
+                }
 
                 student4_id = temp_id;
                 // Cleaning buffer for getline
@@ -205,55 +224,72 @@ int main()
                 cin >> student4_semester;
                 cout << "Record Saved Successfully!";
             }
+            if (m1_go_main) continue; // go to main menu
         }
 
         //Module 2) Enter / Replace Quiz Setup (Total Marks + Date)
         else if (main_choice == 2)
         {
             temp_quiz_id = 0;
+            bool m2_go_main = false;
             cout << "\n\n================ QUIZ SETUP MENU ================\n";
             cout << "STATUS: Quiz 1 and Quiz 2 are already saved\n";
 
-        module2_quiz_select:
-            cout << "Press 3 to enter Quiz 3 data: ";
-            cin >> temp_quiz_id;
-
-            //Invalid quiz no
-            if (temp_quiz_id != 3)
+            while (true)
             {
-                cout << "Invalid Quiz Number!\n\n";
+                cout << "Press 3 to enter Quiz 3 data: ";
+                cin >> temp_quiz_id;
 
-            module2_menu1:
-                option = 0;
-                cout << "1) Try Again\n";
-                cout << "2) Go Back to Main Menu\n";
-                cin >> option;
+                //Invalid quiz no
+                if (temp_quiz_id != 3)
+                {
+                    cout << "Invalid Quiz Number!\n\n";
 
-                if (option == 1)
-                    goto module2_quiz_select;
-                else if (option == 2)
-                    goto main_menu;
+                    while (true)
+                    {
+                        option = 0;
+                        cout << "1) Try Again\n";
+                        cout << "2) Go Back to Main Menu\n";
+                        cin >> option;
+
+                        if (option == 1)
+                            break; // retry quiz select
+                        else if (option == 2)
+                        {
+                            m2_go_main = true;
+                            break;
+                        }
+                        else
+                        cout << "Invalid main_choice!\n\n";
+                        
+                    }
+                    if (m2_go_main) break;
+                    continue; // retry quiz select
+                }
+                // if user press 3 for quiz 3 entry
                 else
                 {
-                    cout << "Invalid main_choice!\n\n";
-                    goto module2_menu1;
+                    break; // valid, proceed to data entry
                 }
             }
-            // if user press 3 for quiz 3 entry
-            else
+
+            if (!m2_go_main)
             {
                 quiz_id[index_quiz3] = temp_quiz_id;
                 cout << "\n Enter Data for Quiz 3 \n";
                 // ... quiz id entry logic ...
 
-            module2_quiz_marks:
-                cout << "Enter Total Marks: ";
-                // FIX: Use index_quiz3 ( which is 2) directly to store in the 3rd slot
-                cin >> quiz_total[index_quiz3];
+                while (true)
+                {
+                    cout << "Enter Total Marks: ";
+                    // FIX: Use index_quiz3 ( which is 2) directly to store in the 3rd slot
+                    cin >> quiz_total[index_quiz3];
 
-                if (quiz_total[index_quiz3] <= 0) {
-                    cout << "Marks must be greater than 0!\n";
-                    goto module2_quiz_marks;
+                    if (quiz_total[index_quiz3] <= 0) {
+                        cout << "Marks must be greater than 0!\n";
+                        continue;
+                    }
+                    break;
                 }
 
                 cout << "Enter Quiz Date\n";
@@ -264,6 +300,7 @@ int main()
                 cout << "Year: ";
                 cin >> quiz_year[index_quiz3];
             }
+            if (m2_go_main) continue; // go to main menu
         }
 
         //3) Enter Quiz Marks (Student-wise or Quiz-wise)
@@ -271,184 +308,278 @@ int main()
         {
             found = 0;
             option = 0;
-        module3_menu_1:
-            cout << "\n\n================ ENTER QUIZ MARKS ================\n";
-            cout << "1) Student-wise Entry\n";
-            cout << "2) Quiz-wise Entry\n";
-            cout << "3) Individual Entry\n";
-            cout << "Choose option: ";
-            cin >> option;
-
-            // ---------------- STUDENT-WISE ----------------
-            if (option == 1)
+            while (true) //  module3_menu_1 label
             {
-                cout << "Enter Student ID: ";
-                cin >> temp_id;
+                cout << "\n\n================ ENTER QUIZ MARKS ================\n";
+                cout << "1) Student-wise Entry\n";
+                cout << "2) Quiz-wise Entry\n";
+                cout << "3) Individual Entry\n";
+                cout << "Choose option: ";
+                cin >> option;
 
-                //Check student exists
-                if (temp_id == student1_id || temp_id == student2_id || temp_id == student3_id || temp_id == student4_id)
+                bool m3_retry_menu = false;
+
+                // ---------------- STUDENT-WISE ----------------
+                if (option == 1)
+                {
+                    cout << "Enter Student ID: ";
+                    cin >> temp_id;
+
+                    //Check student exists
+                    if (temp_id == student1_id || temp_id == student2_id || temp_id == student3_id || temp_id == student4_id)
+                        found = 1;
+
+                    if (found == 0)
+                    {
+                        cout << "Student does NOT exist!\n";
+                        continue; // retry menu
+                    }
+
+                    for (int i = 0; i < maximum_quiz; i++) {
+                        if (quiz_id[i] != 0) {
+                            cout << "Enter marks for Quiz " << i + 1 << " (Total: " << quiz_total[i] << "): ";
+                            cin >> marks;
+
+                            if (marks < 0 || marks > quiz_total[i]) {
+                                cout << "Invalid marks! Try again.\n";
+                                i--;
+                            }
+                            else {
+                                if (temp_id == student1_id)
+                                    student1_marks[i] = marks;
+                                else if (temp_id == student2_id)
+                                    student2_marks[i] = marks;
+                                else if (temp_id == student3_id)
+                                    student3_marks[i] = marks;
+                                else if (temp_id == student4_id)
+                                    student4_marks[i] = marks;
+                            }
+                        }
+                    }
+                    cout << "Student-wise marks saved successfully!\n";
+                    break; // done, exit menu loop
+                }
+
+                // ---------------- QUIZ-WISE ----------------
+                else if (option == 2)
+                {
+                    bool m3_opt2_valid_quiz = false;
+                    while (true) //  module3_quizid label
+                    {
+                        cout << "Enter Quiz ID ";
+                        if (quiz_id[index_quiz3] == 0)
+                            cout << "(1 - 2): ";
+                        else
+                            cout << "(1 - 3): ";
+
+                        cin >> temp_quiz_id;
+
+                        if (temp_quiz_id == 3 && quiz_id[maximum_quiz - 1] == 0) {
+                            cout << "Quiz not exist!\n";
+                            continue; // retry quiz ID
+                        }
+
+                        if (temp_quiz_id < 1 || temp_quiz_id > maximum_quiz)
+                        {
+                            cout << "Invalid Quiz Number!\n";
+                            m3_retry_menu = true;
+                            break; // break to retry menu
+                        }
+                        m3_opt2_valid_quiz = true;
+                        break; // valid quiz
+                    }
+                    if (m3_retry_menu) continue; // retry module3_menu_1
+
+                    if (m3_opt2_valid_quiz)
+                    {
+                        cout << "Total Marks: " << quiz_total[temp_quiz_id - 1] << "\n";
+
+                        do {
+                            cout << "Enter marks for Student 1: ";
+                            cin >> marks;
+                            if (marks >= 0 && marks <= quiz_total[temp_quiz_id - 1])
+                            { student1_marks[temp_quiz_id - 1] = marks; break; }
+                            else cout << "\nInvalid Marks!\n";
+                        } while (true);
+
+                        do {
+                            cout << "Enter marks for Student 2: ";
+                            cin >> marks;
+                            if (marks >= 0 && marks <= quiz_total[temp_quiz_id - 1])
+                            { student2_marks[temp_quiz_id - 1] = marks; break; }
+                            else cout << "\nInvalid Marks!\n";
+                        } while (true);
+
+                        do {
+                            cout << "Enter marks for Student 3: ";
+                            cin >> marks;
+                            if (marks >= 0 && marks <= quiz_total[temp_quiz_id - 1])
+                            { student3_marks[temp_quiz_id - 1] = marks; break; }
+                            else cout << "\nInvalid Marks!\n";
+                        } while (true);
+
+                        //Student 4 (only if exists)
+                        if (student4_id != 0)
+                        {
+                            do {
+                                cout << "Enter marks for Student 4: ";
+                                cin >> marks;
+                                if (marks >= 0 && marks <= quiz_total[temp_quiz_id - 1])
+                                { student4_marks[temp_quiz_id - 1] = marks; break; }
+                                else cout << "\nInvalid Marks!\n";
+                            } while (true);
+                        }
+
+                        cout << "Quiz-wise marks saved successfully!\n";
+                    }
+                    break; // done, exit menu loop
+                }
+
+                //Individual Entry
+                else if (option == 3)
+                {
+                    found = 0; // Reset every time this option starts
+                    temp_id = 0;
+                    temp_quiz_id = 0;
+                    //Enter Student ID
+                    cout << "Enter Student ID: ";
+                    cin >> temp_id;
+
+                    //Check if student exists
+                    if (temp_id == student1_id || temp_id == student2_id || temp_id == student3_id || temp_id == student4_id)
                     found = 1;
+                    
 
-                if (found == 0)
-                {
-                    cout << "Student does NOT exist!\n";
-                    goto module3_menu_1;
-                }
-
-                for (int i = 0; i < maximum_quiz; i++) {
-                    if (quiz_id[i] != 0) {
-                        cout << "Enter marks for Quiz " << i + 1 << " (Total: " << quiz_total[i] << "): ";
-                        cin >> marks;
-
-                        if (marks < 0 || marks > quiz_total[i]) {
-                            cout << "Invalid marks! Try again.\n";
-                            i--;
-                        }
-                        else {
-                            if (temp_id == student1_id)
-                                student1_marks[i] = marks;
-                            else if (temp_id == student2_id)
-                                student2_marks[i] = marks;
-                            else if (temp_id == student3_id)
-                                student3_marks[i] = marks;
-                            else if (temp_id == student4_id)
-                                student4_marks[i] = marks;
-                        }
+                    if (found == 0)
+                    {
+                        cout << "Student does NOT exist!\n";
+                        continue; // retry menu
                     }
-                }
-                cout << "Student-wise marks saved successfully!\n";
-            }
 
-            // ---------------- QUIZ-WISE ----------------
-            else if (option == 2)
-            {
-            module3_quizid:
-                cout << "Enter Quiz ID ";
-                if (quiz_id[index_quiz3] == 0)
-                    cout << "(1 - 2): ";
+                    //Enter Quiz ID
+                    bool m3_s3_valid_quiz = false;
+                    while (true) //  module3_section3_quizid label
+                    {
+                        cout << "Enter Quiz ID ";
+
+                        if (quiz_id[index_quiz3] == 0)
+                            cout << "(1 - 2): ";
+                        else
+                            cout << "(1 - 3): ";
+
+                        cin >> temp_quiz_id;
+
+                        if (temp_quiz_id == 3 && quiz_id[index_quiz3] == 0) {
+                            cout << "Quiz does NOT exist!\n";
+                            continue; // retry quiz ID
+                        }
+
+                        if (temp_quiz_id < 1 && temp_quiz_id > maximum_quiz)
+                        {
+                            cout << "Invalid Quiz ID!\n";
+                            m3_retry_menu = true;
+                            break;
+                        }
+                        m3_s3_valid_quiz = true;
+                        break;
+                    }
+                    if (m3_retry_menu) continue; // retry module3_menu_1
+
+                    if (m3_s3_valid_quiz)
+                    {
+                        //Enter marks
+                        while (true) //  module3_section3_marks label
+                        {
+                            cout << "Enter Marks (Total : " << quiz_total[temp_quiz_id - 1] << "): ";
+                            cin >> marks;
+
+                            if (marks < 0 || marks > quiz_total[temp_quiz_id - 1])
+                            {
+                                cout << "Invalid Marks!\n";
+                                cout << "Range is : 0 to " << quiz_total[temp_quiz_id - 1] << endl;
+                                continue;
+                            }
+                            break;
+                        }
+
+                        //Store marks
+                        if (temp_id == student1_id)
+                            student1_marks[temp_quiz_id - 1] = marks;
+                        else if (temp_id == student2_id)
+                            student2_marks[temp_quiz_id - 1] = marks;
+                        else if (temp_id == student3_id)
+                            student3_marks[temp_quiz_id - 1] = marks;
+                        else if (temp_id == student4_id)
+                            student4_marks[temp_quiz_id - 1] = marks;
+
+                        cout << "Marks Entered / Updated Successfully!\n";
+                    }
+                    break; // done, exit menu loop
+                }
                 else
-                    cout << "(1 - 3): ";
-
-                cin >> temp_quiz_id;
-
-                if (temp_quiz_id == 3 && quiz_id[maximum_quiz - 1] == 0) {
-                    cout << "Quiz not exist!\n";
-                    goto module3_quizid;
-                }
-
-                if (temp_quiz_id < 1 || temp_quiz_id > maximum_quiz)
                 {
-                    cout << "Invalid Quiz Number!\n";
-                    goto module3_menu_1;
+                    cout << "Invalid Option!\n";
+                    continue; // retry menu
                 }
-                cout << "Total Marks: " << quiz_total[temp_quiz_id - 1] << "\n";
-            Student1_marks:
-                cout << "Enter marks for Student 1: ";
-                cin >> marks;
-                if (marks >= 0 && marks <= quiz_total[temp_quiz_id - 1])
-                    student1_marks[temp_quiz_id - 1] = marks;
-                else {
-                    cout << "\nInvalid Marks!\n";
-                    goto Student1_marks;
-                }
-
-            Student2_marks:
-                cout << "Enter marks for Student 2: ";
-                cin >> marks;
-                if (marks >= 0 && marks <= quiz_total[temp_quiz_id - 1])
-                    student2_marks[temp_quiz_id - 1] = marks;
-                else {
-                    cout << "\nInvalid Marks!\n";
-                    goto Student2_marks;
-                }
-
-            Student3_marks:
-                cout << "Enter marks for Student 3: ";
-                cin >> marks;
-                if (marks >= 0 && marks <= quiz_total[temp_quiz_id - 1])
-                    student3_marks[temp_quiz_id - 1] = marks;
-                else {
-                    cout << "\nInvalid Marks!\n";
-                    goto Student3_marks;
-                }
-
-                //Student 4 (only if exists)
-                if (student4_id != 0)
-                {
-                Student4_marks:
-                    cout << "Enter marks for Student 4: ";
-                    cin >> marks;
-                    if (marks >= 0 && marks <= quiz_total[temp_quiz_id - 1])
-                        student4_marks[temp_quiz_id - 1] = marks;
-                    else {
-                        cout << "\nInvalid Marks!\n";
-                        goto Student4_marks;
-                    }
-                }
-
-                cout << "Quiz-wise marks saved successfully!\n";
             }
+        }
 
-            //Individual Entry
-            else if (option == 3)
+        //4) Update Marks (Student ID + Quiz) - Same logic as Individual Entry
+        else if (main_choice == 4) {
+            while (true) //  module_4_redirection label
             {
-            module_4_redirection:
-                found = 0; // Reset every time this option starts
+                found = 0;
                 temp_id = 0;
                 temp_quiz_id = 0;
-                //Enter Student ID
                 cout << "Enter Student ID: ";
                 cin >> temp_id;
 
-                //Check if student exists
                 if (temp_id == student1_id || temp_id == student2_id || temp_id == student3_id || temp_id == student4_id)
-                {
                     found = 1;
-                }
 
                 if (found == 0)
                 {
                     cout << "Student does NOT exist!\n";
-                    if (main_choice == 4)
-                        goto module_4_redirection;
-
-                    goto module3_menu_1;
+                    continue; // retry student ID
                 }
 
                 //Enter Quiz ID
-            module3_section3_quizid:
-                cout << "Enter Quiz ID ";
-
-                if (quiz_id[index_quiz3] == 0)
-                    cout << "(1 - 2): ";
-                else
-                    cout << "(1 - 3): ";
-
-                cin >> temp_quiz_id;
-
-                if (temp_quiz_id == 3 && quiz_id[index_quiz3] == 0) {
-                    cout << "Quiz does NOT exist!\n";
-                    goto module3_section3_quizid;
-                }
-
-                if (temp_quiz_id < 1 && temp_quiz_id > maximum_quiz)
+                while (true)
                 {
-                    cout << "Invalid Quiz ID!\n";
-                    goto module3_menu_1;
+                    cout << "Enter Quiz ID ";
+                    if (quiz_id[index_quiz3] == 0)
+                        cout << "(1 - 2): ";
+                    else
+                        cout << "(1 - 3): ";
+
+                    cin >> temp_quiz_id;
+
+                    if (temp_quiz_id == 3 && quiz_id[index_quiz3] == 0) {
+                        cout << "Quiz does NOT exist!\n";
+                        continue;
+                    }
+                    if (temp_quiz_id < 1 && temp_quiz_id > maximum_quiz)
+                    {
+                        cout << "Invalid Quiz ID!\n";
+                        continue;
+                    }
+                    break;
                 }
-            module3_section3_marks:
+
                 //Enter marks
-                cout << "Enter Marks (Total : " << quiz_total[temp_quiz_id - 1] << "): ";
-                cin >> marks;
-
-                if (marks < 0 || marks > quiz_total[temp_quiz_id - 1])
+                while (true)
                 {
-                    cout << "Invalid Marks!\n";
-                    cout << "Range is : 0 to " << quiz_total[temp_quiz_id - 1] << endl;
-                    goto module3_section3_marks;
+                    cout << "Enter Marks (Total : " << quiz_total[temp_quiz_id - 1] << "): ";
+                    cin >> marks;
+                    if (marks < 0 || marks > quiz_total[temp_quiz_id - 1])
+                    {
+                        cout << "Invalid Marks!\n";
+                        cout << "Range is : 0 to " << quiz_total[temp_quiz_id - 1] << endl;
+                        continue;
+                    }
+                    break;
                 }
 
-                //Store marks
                 if (temp_id == student1_id)
                     student1_marks[temp_quiz_id - 1] = marks;
                 else if (temp_id == student2_id)
@@ -459,16 +590,8 @@ int main()
                     student4_marks[temp_quiz_id - 1] = marks;
 
                 cout << "Marks Entered / Updated Successfully!\n";
+                break; // done
             }
-            else
-            {
-                cout << "Invalid Option!\n";
-            }
-        }
-
-        //4) Update Marks (Student ID + Quiz)
-        else if (main_choice == 4) {
-            goto module_4_redirection;
         }
 
         //5) Display Complete Marks Sheet
@@ -574,235 +697,276 @@ int main()
         else if (main_choice == 6)
         {
             temp_id = 0;
+            bool m6_go_main = false;
             cout << "\n\n=========== INDIVIDUAL STUDENT RESULT CARD ===========\n";
-        module6_id_entry:
-            cout << "\nEnter Student ID: ";
-            cin >> temp_id;
-        module6_calculations:
-            option = 0;
-            sum = 0;
-            count = 0;
-            average = 0;
-            found = 0;
 
-
-
-            // ----------- CALCULATE SUM & COUNT -----------
-            if (temp_id == student1_id)
+            bool m6_valid_student = false;
+            while (true) //  module6_id_entry label
             {
-                for (int i = 0; i < maximum_quiz; i++)
-                {
-                    if (student1_marks[i] != -1)
-                    {
-                        sum += student1_marks[i];
-                        count++;
-                    }
-                }
-            }
-            else if (temp_id == student2_id)
-            {
-                for (int i = 0; i < maximum_quiz; i++)
-                {
-                    if (student2_marks[i] != -1)
-                    {
-                        sum += student2_marks[i];
-                        count++;
-                    }
-                }
-            }
-            else if (temp_id == student3_id)
-            {
-                for (int i = 0; i < maximum_quiz; i++)
-                {
-                    if (student3_marks[i] != -1)
-                    {
-                        sum += student3_marks[i];
-                        count++;
-                    }
-                }
-            }
-            else if (temp_id == student4_id)
-            {
-                for (int i = 0; i < maximum_quiz; i++)
-                {
-                    if (student4_marks[i] != -1)
-                    {
-                        sum += student4_marks[i];
-                        count++;
-                    }
-                }
-            }
-            // Invalid Student ID
-            else
-            {
-            module6_menu2:
-                cout << "\nInvalid Student ID!\n";
-                cout << "1) Try Again \n2) Main Menu\n";
-                cin >> option;
-                if (option == 1) goto module6_id_entry;
-                else if (option == 2) goto main_menu;
-                else
-                    goto module6_menu2;
-            }
-            // No marks entered case
-            if (count == 0)
-            {
-                cout << "\nNo marks entered for this student!\n";
-                goto module6_menu2;
-            }
-
-            // AVERAGE & GRADE CALCULATION
-            int total_possible = 0;
-            for (int i = 0; i < maximum_quiz; i++)
-                if (quiz_id[i] != 0) total_possible += quiz_total[i];
-
-            if (total_possible > 0) {
-                average = (sum * 100) / total_possible;
-            } else {
+                cout << "\nEnter Student ID: ";
+                cin >> temp_id;
+                option = 0;
+                sum = 0;
+                count = 0;
                 average = 0;
+                found = 0;
+
+                // ----------- CALCULATE SUM & COUNT -----------
+                if (temp_id == student1_id)
+                {
+                    for (int i = 0; i < maximum_quiz; i++)
+                    {
+                        if (student1_marks[i] != -1)
+                        {
+                            sum += student1_marks[i];
+                            count++;
+                        }
+                    }
+                    m6_valid_student = true;
+                }
+                else if (temp_id == student2_id)
+                {
+                    for (int i = 0; i < maximum_quiz; i++)
+                    {
+                        if (student2_marks[i] != -1)
+                        {
+                            sum += student2_marks[i];
+                            count++;
+                        }
+                    }
+                    m6_valid_student = true;
+                }
+                else if (temp_id == student3_id)
+                {
+                    for (int i = 0; i < maximum_quiz; i++)
+                    {
+                        if (student3_marks[i] != -1)
+                        {
+                            sum += student3_marks[i];
+                            count++;
+                        }
+                    }
+                    m6_valid_student = true;
+                }
+                else if (temp_id == student4_id)
+                {
+                    for (int i = 0; i < maximum_quiz; i++)
+                    {
+                        if (student4_marks[i] != -1)
+                        {
+                            sum += student4_marks[i];
+                            count++;
+                        }
+                    }
+                    m6_valid_student = true;
+                }
+                // Invalid Student ID
+                else
+                m6_valid_student = false;
+                
+
+                // Handle invalid student or no marks
+                if (!m6_valid_student || count == 0)
+                {
+                    if (!m6_valid_student)
+                        cout << "\nInvalid Student ID!\n";
+                    else
+                        cout << "\nNo marks entered for this student!\n";
+
+                    while (true) //  module6_menu2 label
+                    {
+                        cout << "1) Try Again \n2) Main Menu\n";
+                        cin >> option;
+                        if (option == 1) break;  // will continue outer loop
+                        else if (option == 2) { m6_go_main = true; break; }
+                        else cout << "Invalid choice!\n"; 
+                    }
+                    if (m6_go_main) break;
+                    continue; // retry ID entry
+                }
+
+                break; // valid student with marks, proceed
             }
 
-            if (average >= 85) grade = 'A';
-            else if (average >= 70) grade = 'B';
-            else if (average >= 50) grade = 'C';
-            else if (average >= 40) grade = 'D';
-            else grade = 'F';
+            if (!m6_go_main && m6_valid_student)
+            {
+                // AVERAGE & GRADE CALCULATION
+                int total_possible = 0;
+                if (temp_id == student1_id) 
+                {
+                    for (int i = 0; i < maximum_quiz; i++) 
+                    if (student1_marks[i] != -1) total_possible += quiz_total[i]; 
+                    
+                }
+                else if (temp_id == student2_id) 
+                {
+                    for (int i = 0; i < maximum_quiz; i++) 
+                    if (student2_marks[i] != -1) total_possible += quiz_total[i]; 
+                    
+                }
+                else if (temp_id == student3_id) 
+                {
+                    for (int i = 0; i < maximum_quiz; i++) 
+                    if (student3_marks[i] != -1) total_possible += quiz_total[i]; 
+                    
+                }
+                else if (temp_id == student4_id) 
+                {
+                    for (int i = 0; i < maximum_quiz; i++) 
+                    if (student4_marks[i] != -1) total_possible += quiz_total[i]; 
+                    
+                }
 
-            // STORE IN ARRAYS 
-            if (temp_id == student1_id)
-            {
-                student_marks_sum[0] = sum;
-                student_avg[0] = average;
-                student_grade[0] = grade;
-            }
-            else if (temp_id == student2_id)
-            {
-                student_marks_sum[1] = sum;
-                student_avg[1] = average;
-                student_grade[1] = grade;
-            }
-            else if (temp_id == student3_id)
-            {
-                student_marks_sum[2] = sum;
-                student_avg[2] = average;
-                student_grade[2] = grade;
-            }
-            else if (temp_id == student4_id)
-            {
-                student_marks_sum[3] = sum;
-                student_avg[3] = average;
-                student_grade[3] = grade;
-            }
+                if (total_possible > 0) 
+                average = (sum * 100) / total_possible;
+                
+                else 
+                average = 0;
+                
 
-            // Display Card
-            if (temp_id == student1_id)
-            {
-                found = 1;
-                cout << "\nStudent Name : " << student1_name;
-                cout << "\nStudent ID   : " << student1_id << endl;
-                for (int i = 0; i < maximum_quiz; i++)
-                {
-                    if (quiz_id[i] != 0)
-                    {
-                        cout << "Quiz " << i + 1 << " Marks: ";
-                        if (student1_marks[i] == -1) cout << "NA\n";
-                        else cout << student1_marks[i] << endl;
-                    }
-                }
-                cout << "Total Marks  : " << student_marks_sum[0] << endl;
-                cout << "Average      : " << student_avg[0] << endl;
-                cout << "Grade        : " << student_grade[0] << endl;
-            }
-            else if (temp_id == student2_id)
-            {
-                found = 1;
-                cout << "\nStudent Name : " << student2_name;
-                cout << "\nStudent ID   : " << student2_id << endl;
-                for (int i = 0; i < maximum_quiz; i++)
-                {
-                    if (quiz_id[i] != 0)
-                    {
-                        cout << "Quiz " << i + 1 << " Marks: ";
-                        if (student2_marks[i] == -1) cout << "NA\n";
-                        else cout << student2_marks[i] << endl;
-                    }
-                }
-                cout << "Total Marks  : " << student_marks_sum[1] << endl;
-                cout << "Average      : " << student_avg[1] << endl;
-                cout << "Grade        : " << student_grade[1] << endl;
-            }
-            else if (temp_id == student3_id)
-            {
-                found = 1;
-                cout << "\nStudent Name : " << student3_name;
-                cout << "\nStudent ID   : " << student3_id << endl;
-                for (int i = 0; i < maximum_quiz; i++)
-                {
-                    if (quiz_id[i] != 0)
-                    {
-                        cout << "Quiz " << i + 1 << " Marks: ";
-                        if (student3_marks[i] == -1) cout << "NA\n";
-                        else cout << student3_marks[i] << endl;
-                    }
-                }
-                cout << "Total Marks  : " << student_marks_sum[2] << endl;
-                cout << "Average      : " << student_avg[2] << endl;
-                cout << "Grade        : " << student_grade[2] << endl;
-            }
-            else if (temp_id == student4_id)
-            {
-                found = 1;
-                cout << "\nStudent Name : " << student4_name;
-                cout << "\nStudent ID   : " << student4_id << endl;
-                for (int i = 0; i < maximum_quiz; i++)
-                {
-                    if (quiz_id[i] != 0)
-                    {
-                        cout << "Quiz " << i + 1 << " Marks: ";
-                        if (student4_marks[i] == -1) cout << "NA\n";
-                        else cout << student4_marks[i] << endl;
-                    }
-                }
-                cout << "Total Marks  : " << student_marks_sum[3] << endl;
-                cout << "Average      : " << student_avg[3] << endl;
-                cout << "Grade        : " << student_grade[3] << endl;
-            }
-            else {
-                cout << "Student not found!\n";
-                goto main_menu;
-            }
-            // Pass / Fail Display
-            if (grade == 'F')
-                cout << "Result       : FAIL\n";
-            else
-                cout << "Result       : PASS\n";
+                if (average >= 85) grade = 'A';
+                else if (average >= 70) grade = 'B';
+                else if (average >= 50) grade = 'C';
+                else if (average >= 40) grade = 'D';
+                else grade = 'F';
 
-            cout << "=====================================================\n";
+                // STORE IN ARRAYS 
+                if (temp_id == student1_id)
+                {
+                    student_marks_sum[0] = sum;
+                    student_avg[0] = average;
+                    student_grade[0] = grade;
+                }
+                else if (temp_id == student2_id)
+                {
+                    student_marks_sum[1] = sum;
+                    student_avg[1] = average;
+                    student_grade[1] = grade;
+                }
+                else if (temp_id == student3_id)
+                {
+                    student_marks_sum[2] = sum;
+                    student_avg[2] = average;
+                    student_grade[2] = grade;
+                }
+                else if (temp_id == student4_id)
+                {
+                    student_marks_sum[3] = sum;
+                    student_avg[3] = average;
+                    student_grade[3] = grade;
+                }
+
+                // Display Card
+                if (temp_id == student1_id)
+                {
+                    found = 1;
+                    cout << "\nStudent Name : " << student1_name;
+                    cout << "\nStudent ID   : " << student1_id << endl;
+                    for (int i = 0; i < maximum_quiz; i++)
+                    {
+                        if (quiz_id[i] != 0)
+                        {
+                            cout << "Quiz " << i + 1 << " Marks: ";
+                            if (student1_marks[i] == -1) cout << "NA\n";
+                            else cout << student1_marks[i] << endl;
+                        }
+                    }
+                    cout << "Total Marks  : " << student_marks_sum[0] << endl;
+                    cout << "Average      : " << student_avg[0] << endl;
+                    cout << "Grade        : " << student_grade[0] << endl;
+                }
+                else if (temp_id == student2_id)
+                {
+                    found = 1;
+                    cout << "\nStudent Name : " << student2_name;
+                    cout << "\nStudent ID   : " << student2_id << endl;
+                    for (int i = 0; i < maximum_quiz; i++)
+                    {
+                        if (quiz_id[i] != 0)
+                        {
+                            cout << "Quiz " << i + 1 << " Marks: ";
+                            if (student2_marks[i] == -1) cout << "NA\n";
+                            else cout << student2_marks[i] << endl;
+                        }
+                    }
+                    cout << "Total Marks  : " << student_marks_sum[1] << endl;
+                    cout << "Average      : " << student_avg[1] << endl;
+                    cout << "Grade        : " << student_grade[1] << endl;
+                }
+                else if (temp_id == student3_id)
+                {
+                    found = 1;
+                    cout << "\nStudent Name : " << student3_name;
+                    cout << "\nStudent ID   : " << student3_id << endl;
+                    for (int i = 0; i < maximum_quiz; i++)
+                    {
+                        if (quiz_id[i] != 0)
+                        {
+                            cout << "Quiz " << i + 1 << " Marks: ";
+                            if (student3_marks[i] == -1) cout << "NA\n";
+                            else cout << student3_marks[i] << endl;
+                        }
+                    }
+                    cout << "Total Marks  : " << student_marks_sum[2] << endl;
+                    cout << "Average      : " << student_avg[2] << endl;
+                    cout << "Grade        : " << student_grade[2] << endl;
+                }
+                else if (temp_id == student4_id)
+                {
+                    found = 1;
+                    cout << "\nStudent Name : " << student4_name;
+                    cout << "\nStudent ID   : " << student4_id << endl;
+                    for (int i = 0; i < maximum_quiz; i++)
+                    {
+                        if (quiz_id[i] != 0)
+                        {
+                            cout << "Quiz " << i + 1 << " Marks: ";
+                            if (student4_marks[i] == -1) cout << "NA\n";
+                            else cout << student4_marks[i] << endl;
+                        }
+                    }
+                    cout << "Total Marks  : " << student_marks_sum[3] << endl;
+                    cout << "Average      : " << student_avg[3] << endl;
+                    cout << "Grade        : " << student_grade[3] << endl;
+                }
+
+                // Pass / Fail Display
+                if (grade == 'F')
+                    cout << "Result       : FAIL\n";
+                else
+                    cout << "Result       : PASS\n";
+
+                cout << "=====================================================\n";
+            }
+            if (m6_go_main) continue; // go to main menu
         }
 
         //7) Quiz-wise Statistics
         else if (main_choice == 7)
         {
             cout << "\n\n================ QUIZ-WISE STATISTICS ================\n";
-        module7_quiz_select:
-            quiz_selection = 0;
-            cout << "Enter Quiz ID ";
-            if (quiz_id[index_quiz3] == 0)
-                cout << "(1 - 2): ";
-            else
-                cout << "(1 - 3): ";
-            cin >> quiz_selection;
-
-            if (quiz_selection < 1 || quiz_selection > maximum_quiz)
+            while (true) //  module7_quiz_select label
             {
-                cout << "Invalid Quiz Number!\n";
-                goto module7_quiz_select;
-            }
+                quiz_selection = 0;
+                cout << "Enter Quiz ID ";
+                if (quiz_id[index_quiz3] == 0)
+                    cout << "(1 - 2): ";
+                else
+                    cout << "(1 - 3): ";
+                cin >> quiz_selection;
 
-            if (quiz_selection == 3 && quiz_id[index_quiz3] == 0)
-            {
-                cout << "Quiz does NOT exist!\n";
-                goto module7_quiz_select;
+                if (quiz_selection < 1 || quiz_selection > maximum_quiz)
+                {
+                    cout << "Invalid Quiz Number!\n";
+                    continue;
+                }
+
+                if (quiz_selection == 3 && quiz_id[index_quiz3] == 0)
+                {
+                    cout << "Quiz does NOT exist!\n";
+                    continue;
+                }
+                break; // valid quiz selected
             }
 
             // Initialize statistics
@@ -822,7 +986,9 @@ int main()
             current_marks_array[0] = student1_marks[quiz_selection - 1];
             current_marks_array[1] = student2_marks[quiz_selection - 1];
             current_marks_array[2] = student3_marks[quiz_selection - 1];
-            current_marks_array[3] = (student4_id != 0) ? student4_marks[quiz_selection - 1] : -1;
+            if (student4_id != 0) current_marks_array[3] = student4_marks[quiz_selection - 1];
+             else current_marks_array[3] = -1;
+            
 
             for (int i = 0; i < maximum_students; i++)
             {
@@ -887,9 +1053,8 @@ int main()
                 cout << "Students Below Threshold (" << threshold << "): " << below_threshold << endl;
             }
             else
-            {
-                cout << "No marks entered for this quiz yet!\n";
-            }
+            cout << "No marks entered for this quiz yet!\n";
+            
             cout << "====================================================\n";
         }
 
@@ -909,7 +1074,8 @@ int main()
             {
                 if (quiz_id[i] != 0)
                 {
-                    if (student1_marks[i] != -1) temp_total_marks[0] += student1_marks[i];
+                    if (student1_marks[i] != -1) 
+                    temp_total_marks[0] += student1_marks[i];
                     if (student2_marks[i] != -1) temp_total_marks[1] += student2_marks[i];
                     if (student3_marks[i] != -1) temp_total_marks[2] += student3_marks[i];
                     if (student4_id != 0 && student4_marks[i] != -1) temp_total_marks[3] += student4_marks[i];
@@ -973,197 +1139,297 @@ int main()
         else if (main_choice == 9)
         {
             cout << "\n\n================ SEARCH / LISTINGS ================\n";
-        module9_menu:
-            cout << "1) Search Student by ID\n";
-            cout << "2) List Pass/Fail Students\n";
-            cout << "3) List Students by Marks Range\n";
-            cout << "Choose option: ";
-            cin >> search_option;
-
-            if (search_option == 1)
+            while (true) // module9_menu label
             {
-                cout << "Enter Student ID: ";
-                cin >> temp_id;
-                found = 0;
+                cout << "1) Search Student by ID\n";
+                cout << "2) List Pass/Fail Students\n";
+                cout << "3) List Students by Marks Range\n";
+                cout << "Choose option: ";
+                cin >> search_option;
 
-                if (temp_id == student1_id)
+                if (search_option == 1)
                 {
-                    found = 1;
-                    sum = 0;
-                    count = 0;
-                    for (int i = 0; i < maximum_quiz; i++)
+                    cout << "Enter Student ID: ";
+                    cin >> temp_id;
+                    found = 0;
+
+                    if (temp_id == student1_id)
                     {
-                        if (student1_marks[i] != -1)
+                        found = 1;
+                        sum = 0;
+                        count = 0;
+                        for (int i = 0; i < maximum_quiz; i++)
                         {
-                            sum += student1_marks[i];
-                            count++;
+                            if (student1_marks[i] != -1)
+                            {
+                                sum += student1_marks[i];
+                                count++;
+                            }
+                        }
+                        if (count > 0) average = sum / count;
+                        cout << "\n--- Student Record ---\n";
+                        cout << "ID: " << student1_id << " | Name: " << student1_name << endl;
+                        cout << "Section: " << student1_section << " | Department: " << student1_department << endl;
+                        cout << "Semester: " << student1_semester << endl;
+                        cout << "Total Marks: " << sum << " | Average: " << average << endl;
+                    }
+                    else if (temp_id == student2_id)
+                    {
+                        found = 1;
+                        sum = 0;
+                        count = 0;
+                        for (int i = 0; i < maximum_quiz; i++)
+                        {
+                            if (student2_marks[i] != -1)
+                            {
+                                sum += student2_marks[i];
+                                count++;
+                            }
+                        }
+                        if (count > 0) average = sum / count;
+                        cout << "\n--- Student Record ---\n";
+                        cout << "ID: " << student2_id << " | Name: " << student2_name << endl;
+                        cout << "Section: " << student2_section << " | Department: " << student2_department << endl;
+                        cout << "Semester: " << student2_semester << endl;
+                        cout << "Total Marks: " << sum << " | Average: " << average << endl;
+                    }
+                    else if (temp_id == student3_id)
+                    {
+                        found = 1;
+                        sum = 0;
+                        count = 0;
+                        for (int i = 0; i < maximum_quiz; i++)
+                        {
+                            if (student3_marks[i] != -1)
+                            {
+                                sum += student3_marks[i];
+                                count++;
+                            }
+                        }
+                        if (count > 0) average = sum / count;
+                        cout << "\n--- Student Record ---\n";
+                        cout << "ID: " << student3_id << " | Name: " << student3_name << endl;
+                        cout << "Section: " << student3_section << " | Department: " << student3_department << endl;
+                        cout << "Semester: " << student3_semester << endl;
+                        cout << "Total Marks: " << sum << " | Average: " << average << endl;
+                    }
+                    else if (temp_id == student4_id && student4_id != 0)
+                    {
+                        found = 1;
+                        sum = 0;
+                        count = 0;
+                        for (int i = 0; i < maximum_quiz; i++)
+                        {
+                            if (student4_marks[i] != -1)
+                            {
+                                sum += student4_marks[i];
+                                count++;
+                            }
+                        }
+                        if (count > 0) average = sum / count;
+                        cout << "\n--- Student Record ---\n";
+                        cout << "ID: " << student4_id << " | Name: " << student4_name << endl;
+                        cout << "Section: " << student4_section << " | Department: " << student4_department << endl;
+                        cout << "Semester: " << student4_semester << endl;
+                        cout << "Total Marks: " << sum << " | Average: " << average << endl;
+                    }
+
+                    if (found == 0)
+                        cout << "Student NOT found!\n";
+                    
+                    break;
+                }
+                else if (search_option == 2)
+                {
+                    cout << "\n--- PASS / FAIL LISTING ---\n";
+                    pass_count = 0;
+                    fail_count = 0;
+
+                    for (int i = 0; i < maximum_students; i++)
+                    {
+                        sum = 0;
+                        count = 0;
+
+                        if (i == 0) {
+                            if (student1_id == 0) continue;
+                            for (int i = 0; i < maximum_quiz; i++)
+                                if (student1_marks[i] != -1) 
+                                { 
+                                    sum += student1_marks[i]; 
+                                    count++; 
+                                }
+                            if (count > 0) average = sum / count; 
+                            if (count > 0 && average >= 40) 
+                            { 
+                                cout << "PASS: " << student1_id << " - " << student1_name << " (Avg: " << average << ")\n"; 
+                                pass_count++; 
+                            }
+                            else if (count > 0)             
+                            { 
+                                cout << "FAIL: " << student1_id << " - " << student1_name << " (Avg: " << average << ")\n"; 
+                                fail_count++; 
+                            }
+                        }
+                        else if (i == 1) {
+                            if (student2_id == 0) continue;
+                            for (int i = 0; i < maximum_quiz; i++)
+                                if (student2_marks[i] != -1) 
+                                { 
+                                    sum += student2_marks[i]; 
+                                    count++; 
+                                }
+                            if (count > 0) 
+                            average = sum / count; 
+                            
+                            if (count > 0 && average >= 40) 
+                            { 
+                                cout << "PASS: " << student2_id << " - " << student2_name << " (Avg: " << average << ")\n"; 
+                                pass_count++; 
+                            }
+                            else if (count > 0)             
+                            { 
+                                cout << "FAIL: " << student2_id << " - " << student2_name << " (Avg: " << average << ")\n"; 
+                                fail_count++; 
+                            }
+                        }
+                        else if (i == 2) {
+                            if (student3_id == 0) 
+                            continue;
+                            
+                            for (int i = 0; i < maximum_quiz; i++)
+                                if (student3_marks[i] != -1) 
+                                { 
+                                    sum += student3_marks[i]; 
+                                    count++; 
+                                }
+                            if (count > 0) 
+                            average = sum / count; 
+                            
+                            if (count > 0 && average >= 40) 
+                            { 
+                                cout << "PASS: " << student3_id << " - " << student3_name << " (Avg: " << average << ")\n"; 
+                                pass_count++; 
+                            }
+                            else if (count > 0)             
+                            { 
+                                cout << "FAIL: " << student3_id << " - " << student3_name << " (Avg: " << average << ")\n"; 
+                                fail_count++; 
+                            }
+                        }
+                        else if (i == 3) {
+                            if (student4_id == 0) 
+                            continue;
+                            
+                            for (int i = 0; i < maximum_quiz; i++)
+                                if (student4_marks[i] != -1) 
+                                { 
+                                    sum += student4_marks[i]; 
+                                    count++; 
+                                }
+                            if (count > 0) 
+                            average = sum / count; 
+                            
+                            if (count > 0 && average >= 40) 
+                            { 
+                                cout << "PASS: " << student4_id << " - " << student4_name << " (Avg: " << average << ")\n"; 
+                                pass_count++; 
+                            }
+                            else if (count > 0)             
+                            { 
+                                cout << "FAIL: " << student4_id << " - " << student4_name << " (Avg: " << average << ")\n"; 
+                                fail_count++; 
+                            }
                         }
                     }
-                    if (count > 0) average = sum / count;
-                    cout << "\n--- Student Record ---\n";
-                    cout << "ID: " << student1_id << " | Name: " << student1_name << endl;
-                    cout << "Section: " << student1_section << " | Department: " << student1_department << endl;
-                    cout << "Semester: " << student1_semester << endl;
-                    cout << "Total Marks: " << sum << " | Average: " << average << endl;
+                    cout << "\nTotal Passed: " << pass_count << " | Total Failed: " << fail_count << endl;
+                    break;
                 }
-                else if (temp_id == student2_id)
+                else if (search_option == 3)
                 {
-                    found = 1;
-                    sum = 0;
-                    count = 0;
-                    for (int i = 0; i < maximum_quiz; i++)
+                    cout << "Enter Minimum Marks: ";
+                    cin >> range_min;
+                    cout << "Enter Maximum Marks: ";
+                    cin >> range_max;
+
+                    cout << "\n--- STUDENTS IN RANGE [" << range_min << " - " << range_max << "] ---\n";
+
+                    for (int i = 0; i < maximum_students; i++)
                     {
-                        if (student2_marks[i] != -1)
-                        {
-                            sum += student2_marks[i];
-                            count++;
-                        }
-                    }
-                    if (count > 0) average = sum / count;
-                    cout << "\n--- Student Record ---\n";
-                    cout << "ID: " << student2_id << " | Name: " << student2_name << endl;
-                    cout << "Section: " << student2_section << " | Department: " << student2_department << endl;
-                    cout << "Semester: " << student2_semester << endl;
-                    cout << "Total Marks: " << sum << " | Average: " << average << endl;
-                }
-                else if (temp_id == student3_id)
-                {
-                    found = 1;
-                    sum = 0;
-                    count = 0;
-                    for (int i = 0; i < maximum_quiz; i++)
-                    {
-                        if (student3_marks[i] != -1)
-                        {
-                            sum += student3_marks[i];
-                            count++;
-                        }
-                    }
-                    if (count > 0) average = sum / count;
-                    cout << "\n--- Student Record ---\n";
-                    cout << "ID: " << student3_id << " | Name: " << student3_name << endl;
-                    cout << "Section: " << student3_section << " | Department: " << student3_department << endl;
-                    cout << "Semester: " << student3_semester << endl;
-                    cout << "Total Marks: " << sum << " | Average: " << average << endl;
-                }
-                else if (temp_id == student4_id && student4_id != 0)
-                {
-                    found = 1;
-                    sum = 0;
-                    count = 0;
-                    for (int i = 0; i < maximum_quiz; i++)
-                    {
-                        if (student4_marks[i] != -1)
-                        {
-                            sum += student4_marks[i];
-                            count++;
-                        }
-                    }
-                    if (count > 0) average = sum / count;
-                    cout << "\n--- Student Record ---\n";
-                    cout << "ID: " << student4_id << " | Name: " << student4_name << endl;
-                    cout << "Section: " << student4_section << " | Department: " << student4_department << endl;
-                    cout << "Semester: " << student4_semester << endl;
-                    cout << "Total Marks: " << sum << " | Average: " << average << endl;
-                }
+                        sum = 0;
+                        count = 0;
 
-                if (found == 0)
-                    cout << "Student NOT found!\n";
-            }
-            else if (search_option == 2)
-            {
-                cout << "\n--- PASS / FAIL LISTING ---\n";
-                pass_count = 0;
-                fail_count = 0;
-
-                for (int idx = 0; idx < maximum_students; idx++)
-                {
-                    sum = 0;
-                    count = 0;
-
-                    if (idx == 0) {
-                        if (student1_id == 0) continue;
-                        for (int i = 0; i < maximum_quiz; i++)
-                            if (student1_marks[i] != -1) { sum += student1_marks[i]; count++; }
-                        if (count > 0) { average = sum / count; }
-                        if (count > 0 && average >= 40) { cout << "PASS: " << student1_id << " - " << student1_name << " (Avg: " << average << ")\n"; pass_count++; }
-                        else if (count > 0)             { cout << "FAIL: " << student1_id << " - " << student1_name << " (Avg: " << average << ")\n"; fail_count++; }
-                    }
-                    else if (idx == 1) {
-                        if (student2_id == 0) continue;
-                        for (int i = 0; i < maximum_quiz; i++)
-                            if (student2_marks[i] != -1) { sum += student2_marks[i]; count++; }
-                        if (count > 0) { average = sum / count; }
-                        if (count > 0 && average >= 40) { cout << "PASS: " << student2_id << " - " << student2_name << " (Avg: " << average << ")\n"; pass_count++; }
-                        else if (count > 0)             { cout << "FAIL: " << student2_id << " - " << student2_name << " (Avg: " << average << ")\n"; fail_count++; }
-                    }
-                    else if (idx == 2) {
-                        if (student3_id == 0) continue;
-                        for (int i = 0; i < maximum_quiz; i++)
-                            if (student3_marks[i] != -1) { sum += student3_marks[i]; count++; }
-                        if (count > 0) { average = sum / count; }
-                        if (count > 0 && average >= 40) { cout << "PASS: " << student3_id << " - " << student3_name << " (Avg: " << average << ")\n"; pass_count++; }
-                        else if (count > 0)             { cout << "FAIL: " << student3_id << " - " << student3_name << " (Avg: " << average << ")\n"; fail_count++; }
-                    }
-                    else if (idx == 3) {
-                        if (student4_id == 0) continue;
-                        for (int i = 0; i < maximum_quiz; i++)
-                            if (student4_marks[i] != -1) { sum += student4_marks[i]; count++; }
-                        if (count > 0) { average = sum / count; }
-                        if (count > 0 && average >= 40) { cout << "PASS: " << student4_id << " - " << student4_name << " (Avg: " << average << ")\n"; pass_count++; }
-                        else if (count > 0)             { cout << "FAIL: " << student4_id << " - " << student4_name << " (Avg: " << average << ")\n"; fail_count++; }
-                    }
-                }
-                cout << "\nTotal Passed: " << pass_count << " | Total Failed: " << fail_count << endl;
-            }
-            else if (search_option == 3)
-            {
-                cout << "Enter Minimum Marks: ";
-                cin >> range_min;
-                cout << "Enter Maximum Marks: ";
-                cin >> range_max;
-
-                cout << "\n--- STUDENTS IN RANGE [" << range_min << " - " << range_max << "] ---\n";
-
-                for (int idx = 0; idx < maximum_students; idx++)
-                {
-                    sum = 0;
-                    count = 0;
-
-                    if (idx == 0) {
-                        if (student1_id == 0) continue;
-                        for (int i = 0; i < maximum_quiz; i++)
-                            if (student1_marks[i] != -1) { sum += student1_marks[i]; count++; }
-                        if (count > 0 && sum >= range_min && sum <= range_max)
+                        if (i == 0) {
+                            if (student1_id == 0) 
+                            continue;
+                            
+                            for (int i = 0; i < maximum_quiz; i++)
+                            {
+                                if (student1_marks[i] != -1) 
+                                { 
+                                    sum += student1_marks[i]; 
+                                    count++; 
+                                }
+                            }
+                            if (count > 0 && sum >= range_min && sum <= range_max)
                             cout << student1_id << " - " << student1_name << " (Total: " << sum << ")\n";
-                    }
-                    else if (idx == 1) {
-                        if (student2_id == 0) continue;
-                        for (int i = 0; i < maximum_quiz; i++)
-                            if (student2_marks[i] != -1) { sum += student2_marks[i]; count++; }
-                        if (count > 0 && sum >= range_min && sum <= range_max)
+                            
+                        }
+                        else if (i == 1) {
+                            if (student2_id == 0) 
+                            continue;
+                            
+                            for (int i = 0; i < maximum_quiz; i++)
+                            {
+                                if (student2_marks[i] != -1) 
+                                { 
+                                    sum += student2_marks[i]; 
+                                    count++; 
+                                }
+                            }
+                            if (count > 0 && sum >= range_min && sum <= range_max)
                             cout << student2_id << " - " << student2_name << " (Total: " << sum << ")\n";
-                    }
-                    else if (idx == 2) {
-                        if (student3_id == 0) continue;
-                        for (int i = 0; i < maximum_quiz; i++)
-                            if (student3_marks[i] != -1) { sum += student3_marks[i]; count++; }
-                        if (count > 0 && sum >= range_min && sum <= range_max)
+                            
+                        }
+                        else if (i == 2) {
+                            if (student3_id == 0) 
+                            continue;
+                            
+                            for (int i = 0; i < maximum_quiz; i++)
+                            {
+                                if (student3_marks[i] != -1) 
+                                { 
+                                    sum += student3_marks[i]; 
+                                    count++; 
+                                }
+                            }
+                            if (count > 0 && sum >= range_min && sum <= range_max)
                             cout << student3_id << " - " << student3_name << " (Total: " << sum << ")\n";
-                    }
-                    else if (idx == 3) {
-                        if (student4_id == 0) continue;
-                        for (int i = 0; i < maximum_quiz; i++)
-                            if (student4_marks[i] != -1) { sum += student4_marks[i]; count++; }
-                        if (count > 0 && sum >= range_min && sum <= range_max)
+                            
+                        }
+                        else if (i == 3) {
+                            if (student4_id == 0) 
+                            continue;
+                            
+                            for (int i = 0; i < maximum_quiz; i++)
+                            {
+                                if (student4_marks[i] != -1) 
+                                { 
+                                    sum += student4_marks[i]; 
+                                    count++; 
+                                }
+                            }
+                            if (count > 0 && sum >= range_min && sum <= range_max)
                             cout << student4_id << " - " << student4_name << " (Total: " << sum << ")\n";
+                            
+                        }
                     }
+                    break;
                 }
-            }
-            else
-            {
-                cout << "Invalid option!\n";
-                goto module9_menu;
+                else
+                {
+                    cout << "Invalid option!\n";
+                    continue;
+                }
             }
         }
 
@@ -1203,9 +1469,8 @@ int main()
                         issue_found = 1;
                     }
                     else if (temp_missing == -1)
-                    {
-                        cout << "[MISSING] Student " << j << " | Quiz " << (i + 1) << " marks missing\n";
-                    }
+                    cout << "[MISSING] Student " << j << " | Quiz " << (i + 1) << " marks missing\n";
+                    
                 }
             }
 
@@ -1233,10 +1498,26 @@ int main()
             {
                 if (quiz_id[i] != 0)
                 {
-                    if (student1_marks[i] != -1) overall_sum += student1_marks[i], overall_count++;
-                    if (student2_marks[i] != -1) overall_sum += student2_marks[i], overall_count++;
-                    if (student3_marks[i] != -1) overall_sum += student3_marks[i], overall_count++;
-                    if (student4_id != 0 && student4_marks[i] != -1) overall_sum += student4_marks[i], overall_count++;
+                    if (student1_marks[i] != -1) 
+                    {
+                         overall_sum += student1_marks[i];
+                         overall_count++;
+                    }
+                    if (student2_marks[i] != -1) 
+                    {
+                        overall_sum += student2_marks[i]; 
+                        overall_count++;
+                    }
+                    if (student3_marks[i] != -1) 
+                    {
+                        overall_sum += student3_marks[i]; 
+                        overall_count++;
+                    }
+                    if (student4_id != 0 && student4_marks[i] != -1) 
+                    {
+                        overall_sum += student4_marks[i];
+                        overall_count++;
+                    }
                 }
             }
 
@@ -1261,13 +1542,32 @@ int main()
                     int quiz_count = 0;
                     float quiz_avg = 0;
 
-                    if (student1_marks[i] != -1) quiz_sum += student1_marks[i], quiz_count++;
-                    if (student2_marks[i] != -1) quiz_sum += student2_marks[i], quiz_count++;
-                    if (student3_marks[i] != -1) quiz_sum += student3_marks[i], quiz_count++;
-                    if (student4_id != 0 && student4_marks[i] != -1) quiz_sum += student4_marks[i], quiz_count++;
+                    if (student1_marks[i] != -1) 
+                    {
+                        quiz_sum += student1_marks[i];
+                        quiz_count++;
+                    }
+                    if (student2_marks[i] != -1) 
+                    {
+                        quiz_sum += student2_marks[i];
+                        quiz_count++;
+                    }
+                    if (student3_marks[i] != -1) 
+                    {
+                        quiz_sum += student3_marks[i];
+                        quiz_count++;
+                    }
+                    if (student4_id != 0 && student4_marks[i] != -1) 
+                    {
+                        quiz_sum += student4_marks[i];
+                        quiz_count++;
+                    }
 
-                    if (quiz_count > 0) quiz_avg = quiz_sum / quiz_count;
-                    cout << "Quiz " << (i + 1) << " Average: " << quiz_avg << " (Out of " << quiz_total[i] << ")\n";
+                    if (quiz_count > 0)
+                    {
+                        quiz_avg = quiz_sum / quiz_count;
+                        cout << "Quiz " << (i + 1) << " Average: " << quiz_avg << " (Out of " << quiz_total[i] << ")\n";
+                    }
                 }
             }
             cout << endl;
@@ -1279,41 +1579,105 @@ int main()
             grade_d = 0;
             grade_f = 0;
 
-            for (int idx = 0; idx < maximum_students; idx++)
+            for (int i = 0; i < maximum_students; i++)
             {
                 sum = 0;
                 count = 0;
 
-                if (idx == 0) {
+                if (i == 0) 
+                {
                     for (int i = 0; i < maximum_quiz; i++)
-                        if (student1_marks[i] != -1) { sum += student1_marks[i]; count++; }
+                    {
+                        if (student1_marks[i] != -1) 
+                        {
+                             sum += student1_marks[i]; 
+                             count++; 
+                        }
+                    }
                 }
-                else if (idx == 1) {
+                else if (i == 1) 
+                {
                     for (int i = 0; i < maximum_quiz; i++)
-                        if (student2_marks[i] != -1) { sum += student2_marks[i]; count++; }
+                    {
+                        if (student2_marks[i] != -1) 
+                        {
+                            sum += student2_marks[i]; 
+                            count++; 
+                        }
+                    }
                 }
-                else if (idx == 2) {
+                else if (i == 2) 
+                {
                     for (int i = 0; i < maximum_quiz; i++)
-                        if (student3_marks[i] != -1) { sum += student3_marks[i]; count++; }
+                    {
+                        if (student3_marks[i] != -1) 
+                        {
+                            sum += student3_marks[i]; 
+                            count++; 
+                        }
+                    }
                 }
-                else if (idx == 3) {
-                    if (student4_id == 0) continue;
+                else if (i == 3) 
+                {
+                    if (student4_id == 0) 
+                    continue;
+                    
                     for (int i = 0; i < maximum_quiz; i++)
-                        if (student4_marks[i] != -1) { sum += student4_marks[i]; count++; }
+                    {
+                        if (student4_marks[i] != -1) 
+                        {
+                            sum += student4_marks[i];
+                            count++; 
+                        }
+                    }
                 }
 
                 if (count > 0)
                 {
                     int total_possible = 0;
-                    for (int i = 0; i < maximum_quiz; i++)
-                        if (quiz_id[i] != 0) total_possible += quiz_total[i];
-                    average = (sum * 100) / total_possible;
+                    if (i == 0) 
+                    { 
+                        for (int i = 0; i < maximum_quiz; i++) 
+                        {
+                            if (student1_marks[i] != -1) 
+                            total_possible += quiz_total[i]; 
+                        }
+                    }
+                    else if (i == 1) 
+                    {
+                        for (int i = 0; i < maximum_quiz; i++) 
+                        if (student2_marks[i] != -1) 
+                            total_possible += quiz_total[i]; 
+                            
+                        
+                    }
+                    else if (i == 2) 
+                    {
+                        for (int i = 0; i < maximum_quiz; i++) 
+                        if (student3_marks[i] != -1) 
+                                total_possible += quiz_total[i]; 
+                        
+                    }
+                    else if (i == 3) 
+                    {
+                        for (int i = 0; i < maximum_quiz; i++) 
+                        if (student4_marks[i] != -1) 
+                                total_possible += quiz_total[i]; 
+                        
+                    }
+                    if (total_possible > 0) 
+                        average = (sum * 100) / total_possible;
 
-                    if (average >= 85) grade_a++;
-                    else if (average >= 70) grade_b++;
-                    else if (average >= 50) grade_c++;
-                    else if (average >= 40) grade_d++;
-                    else grade_f++;
+                    if (average >= 85) 
+                        grade_a++;
+                    else if (average >= 70) 
+                        grade_b++;
+                    else if (average >= 50) 
+                        grade_c++;
+                    else if (average >= 40) 
+                        grade_d++;
+                    else 
+                        grade_f++;
                 }
             }
 
@@ -1326,36 +1690,16 @@ int main()
             cout << "Grade F (< 40%):  " << grade_f << " students\n";
             cout << "=====================================================\n";
         }
-        //12) System Policys & Guidelines
-        else if (main_choice == 12)
-        {
-            cout << "\n================ SYSTEM POLICIES & GUIDELINES ================\n";
-            cout << "1. CAPACITY LIMITS:\n";
-            cout << "   - Maximum Students: 4 (3 Fixed + 1 User-defined)\n";
-            cout << "   - Maximum Quizzes : 3 (2 Fixed + 1 User-defined)\n";
-            cout << "\n2. GRADING SCALE:\n";
-            cout << "   - A: >= 85% | B: >= 70% | C: >= 50% | D: >= 40% | F: < 40%\n";
-            cout << "   - Minimum Passing Marks: 40%\n";
-            cout << "\n3. DATA VALIDATION:\n";
-            cout << "   - Student IDs must be unique; duplicates are rejected.\n";
-            cout << "   - Marks must be between 0 and Total Marks for that quiz.\n";
-            cout << "   - 'NA' indicates marks not yet entered for a student.\n";
-            cout << "\n4. TECHNICAL CONSTRAINTS:\n";
-            cout << "   - Built using static arrays (No Dynamic Memory/Vectors).\n";
-            cout << "   - No external libraries used except <iostream>.\n";
-            cout << "   - All calculations performed via manual loops.\n";
-            cout << "============================================================\n";
-        }
-        //To Exit the main menu
+        
+        //To Exit the main menu last module
         else if (main_choice == 0) {
             cout << "\nProgram Exited Successfully!\n\n";
             break;
         }
         //If user Enter Invalid number.
         else
-        {
-            cout << "Invalid main_choice. Please try again." << endl << endl;
-        }
+        cout << "Invalid main_choice. Please try again." << endl << endl;
+        
     } while (infinite_main_menu);
 
     return 0;
