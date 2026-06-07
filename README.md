@@ -11,8 +11,8 @@ low-level programming proficiency.
 | Memory           | Static arrays only — no `new`, `malloc`, or vectors |
 | Strings          | Manual `char` arrays — no `<string>` library        |
 | Navigation       | `goto` statements and loops inside `main()`         |
-| Libraries        | `<iostream>` and `<iomanip>` only                   |
-| Number Precision | `float` used throughout for decimal mark support    |
+| Libraries        | `<iostream>` only                                   |
+
 
 ## 🚀 Features
 
